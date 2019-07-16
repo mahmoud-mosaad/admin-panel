@@ -1,6 +1,6 @@
 <?php
 
-require './controller/UsersController.php';
+require './controller/UserController.php';
 require './controller/CategoryController.php';
 
 if (isset($_GET['controller'])
@@ -11,6 +11,7 @@ if (isset($_GET['controller'])
     $controller = new $_GET['controller']();
     call_user_func(array($controller,$_GET['method']));
 }else{
+
     header('location: view/404.php');
     exit;
 }

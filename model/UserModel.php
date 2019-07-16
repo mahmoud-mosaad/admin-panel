@@ -1,6 +1,6 @@
 <?php
 
-class User
+class UserModel
 {
 
     public function add($name,$email,$password)
@@ -11,7 +11,6 @@ class User
             'email' => $email,
             'password'=>$password
         ]);
-        header("Location: ../index.php");
     }
 
     public function edit($id,$name,$email,$password)
@@ -22,14 +21,19 @@ class User
             'email' => $email,
             'password'=>$password
         ]);
-        header("Location: ../index.php");
     }
 
     public function delete($id)
     {
         $delete = new QueryBuilder;
         $delete->delete("users",$id);
-        header("Location: ../index.php");
     }
+
+    public function retrieve($table)
+    {
+        $select = new QueryBuilder;
+        return $select->selectAll($table);
+    }
+
 
 }

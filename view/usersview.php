@@ -2,7 +2,7 @@
 <html>
     <body>
     <h1>Add a new user </h1>
-    <form action="./index.php?controller=UsersController&method=add" method="POST">
+    <form action="./index.php?controller=UserController&method=add" method="POST">
         <input type="text" name="name" placeholder="Name" />
         <input type="email" name="email" placeholder="Email" />
         <input type="password" name="password" placeholder="password" />
@@ -31,13 +31,13 @@
                 echo(
                 "
                 <tr>
-                    <form action='./index.php?edit={$user->id}&controller=UsersController&method=edit' method='POST'>
+                    <form action='./index.php?edit={$user->id}&controller=UserController&method=edit' method='POST'>
                         <td><input type='text' name='name' value={$user->name} /></td>
                         <td>  <input type='email' name='email' value={$user->email} /></td>
                         <td>  <input type='text' name='password' value={$user->password} /></td>
                         <td>  <input type='submit' name='edit' value='Edit' /> </td>
                     </form>
-                    <td><button><a href='./index.php?delete={$user->id}&controller=UsersController&method=delete'>delete</a></button></td>
+                    <td><button><a href='./index.php?delete={$user->id}&controller=UserController&method=delete'>delete</a></button></td>
                 </tr>
                 "
                 );

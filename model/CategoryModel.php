@@ -1,6 +1,6 @@
 <?php
 
-class Category
+class CategoryModel
 {
 
     public function add($name,$description)

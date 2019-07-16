@@ -1,13 +1,13 @@
 <?php
 
-require "./model/category.php";
-//require './database/QueryBuilder.php';
+require "./model/CategoryModel.php";
+require './database/QueryBuilder.php';
 class CategoryController
 {
     private $model;
     public function __construct()
     {
-        $this->model= new Category();
+        $this->model= new CategoryModel();
     }
 
     public function add()
