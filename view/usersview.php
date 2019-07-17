@@ -34,7 +34,7 @@
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
             <tr>
-                <button><a href='./index.php?delete={$user->id}&controller=UserController&method=delete'>Recent</a></button>
+                <button><a href='./index.php?controller=UserController&method=recentAdded'>Recent</a></button>
                 <th> Name </th>
                 <th> Email </th>
                 <th> password </th>
