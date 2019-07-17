@@ -63,6 +63,12 @@ class UserModel
         return $select->selectUsers();
     }
 
+    public function retrieveSearchedUsers($table,$category,$value)
+    {
+        $select = new QueryBuilder;
+        return $select->search($table,$category,$value);
+    }
+
     public function retrieveAllUsersRoles($users){
         $select = new QueryBuilder;
         return $select->selectUsersRoles($users);

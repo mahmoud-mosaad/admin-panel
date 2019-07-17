@@ -58,5 +58,15 @@ class UserController
         $roles = $this->model->retrieveAllUsersRoles($users);
         require('./view/usersview.php');
     }
+    public function search()
+    {
+        if($_POST['search']=="name") $users = $this->model->retrieveSearchedUsers("users",$_POST["search"],$_POST["value"]);
+        if($_POST['search']=="email") $users = $this->model->retrieveSearchedUsers("users",$_POST["search"],$_POST["value"]);
+        require('./view/usersview.php');
+    }
+    public function recentAdded()
+    {
+
+    }
 
 }

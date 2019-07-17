@@ -20,13 +20,21 @@
     <br/>
 
     <h1>The added users </h1>
-    <form  method="post" action="search.php?go">
-        <input  type="text" name="name">
+
+    <form  action="./index.php?controller=UserController&method=search"  method="post">
+        <input  type="text" name="value">
+        <select name="search">
+            <option value="name">By name</option>
+            <option value="email">By email</option>
+        </select>
         <input  type="submit" name="submit" value="Search">
-	</form>
+    </form>
+
+
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
             <tr>
+                <button><a href='./index.php?delete={$user->id}&controller=UserController&method=delete'>Recent</a></button>
                 <th> Name </th>
                 <th> Email </th>
                 <th> password </th>

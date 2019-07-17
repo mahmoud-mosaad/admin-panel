@@ -101,6 +101,16 @@ class QueryBuilder extends connection
         }
     }
 
+     public function search($table ,$category, $value)
+     {
+        $query = $this->pdo->prepare("select * from {$table} where {$category}=:".$category);
+        $query->bindValue(':'.$category, $value);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_CLASS);
+     }
+
+
+
     public function delete($table , $column , $id)
     {
         $query = $this->pdo->prepare("DELETE FROM $table WHERE $column=:$column");
