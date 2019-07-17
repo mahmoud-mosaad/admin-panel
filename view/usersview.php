@@ -30,11 +30,25 @@
         <input  type="submit" name="submit" value="Search">
     </form>
 
+    <br/>
 
+    <form  action="./index.php?controller=UserController&method=filter"  method="post">
+        <input  type="text" name="name" placeholder="Name">
+        <input  type="text" name="email" placeholder="Email">
+        <input  type="submit" name="submit" value="Filter">
+    </form>
+
+    <br/>
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
             <tr>
                 <button><a href='./index.php?controller=UserController&method=recentAdded'>Recent</a></button>
+                <button><a href='./index.php?controller=UserController&method=OlderAdded'>Older</a></button>
+                <button><a href='./index.php?controller=UserController&method=OrderNameA'>A-Z</a></button>
+                <button><a href='./index.php?controller=UserController&method=OrderNameZ'>Z-A</a></button>
+                <br/>
+                <br/>
+
                 <th> Name </th>
                 <th> Email </th>
                 <th> password </th>

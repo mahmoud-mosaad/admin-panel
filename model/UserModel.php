@@ -80,4 +80,24 @@ class UserModel
         return $select->selectid($email);
     }
 
+    public function retrieveRecent($table)
+    {
+        $select = new QueryBuilder;
+        return $select->Recent($table);
+    }
+    public function retrieveOlder($table)
+    {
+        $select = new QueryBuilder;
+        return $select->Older($table);
+    }
+    public function retrieveOrderName($table,$order)
+    {
+        $select = new QueryBuilder;
+        return $select->OrderByName($table,$order);
+    }
+    public function filter($table,$name,$email)
+    {
+        $select = new QueryBuilder;
+        return $select->filter($table,$name,$email);
+    }
 }

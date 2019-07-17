@@ -118,4 +118,43 @@ class QueryBuilder extends connection
         $query->execute();
     }
 
+    public function Recent($table)
+    {
+        $query = $this->pdo->prepare("SELECT * FROM {$table} ORDER BY id DESC");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_CLASS);
+    }
+    public function Older($table)
+    {
+        $query = $this->pdo->prepare("SELECT * FROM {$table} ORDER BY id ASC");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_CLASS);
+    }
+    public function OrderByName($table,$order)
+    {
+        $query = $this->pdo->prepare("SELECT * FROM {$table} ORDER BY name $order");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_CLASS);
+    }
+    public function filter($table,$name,$email)
+    {
+        if(strlen($name) && strlen($email))
+        {
+            $query = $this->pdo->prepare("select * from {$table} where name=:name AND email=:email");
+            $query->bindValue(':name',$name);
+            $query->bindValue(':email',$email);
+        }
+        if(!strlen($name) && strlen($email))
+        {
+            $query = $this->pdo->prepare("select * from {$table} where email=:email");
+            $query->bindValue(':email',$email);
+        }
+        if(strlen($name) && !strlen($email))
+        {
+            $query = $this->pdo->prepare("select * from {$table} where name=:name");
+            $query->bindValue(':name',$name);
+        }
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_CLASS);
+    }
 }

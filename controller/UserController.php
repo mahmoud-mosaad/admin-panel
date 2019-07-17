@@ -67,8 +67,33 @@ class UserController
     }
     public function recentAdded()
     {
-        $users = $this->model->retrieveSearchedUsers("users",$_POST["search"],$_POST["value"]);
+        $users = $this->model->retrieveRecent("users");
+        $roles = $this->model->retrieveAllUsersRoles($users);
+        require('./view/usersview.php');
+    }
+    public function OlderAdded()
+    {
+        $users = $this->model->retrieveOlder("users");
+        $roles = $this->model->retrieveAllUsersRoles($users);
+        require('./view/usersview.php');
+    }
+    public function OrderNameA()
+    {
+        $users = $this->model->retrieveOrderName("users","ASC");
+        $roles = $this->model->retrieveAllUsersRoles($users);
+        require('./view/usersview.php');
+    }
+    public function OrderNamez()
+    {
+        $users = $this->model->retrieveOrderName("users","DESC");
+        $roles = $this->model->retrieveAllUsersRoles($users);
         require('./view/usersview.php');
     }
 
+    public function filter()
+    {
+        $users = $this->model->filter("users",$_POST['name'],$_POST['email']);
+        $roles = $this->model->retrieveAllUsersRoles($users);
+        require('./view/usersview.php');
+    }
 }
