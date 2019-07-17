@@ -6,12 +6,14 @@ class User
 	private $name;
 	private $email;
 	private $password;
+	private $roles;
 
-	function __construct($name, $email, $password)
+	function __construct($name, $email, $password, $roles)
 	{
 		$this->name = $name;
 		$this->email = $email;
 		$this->password = $password;
+		$this->roles = $roles;
 	}
 
     public function getEmail()
@@ -51,6 +53,22 @@ class User
     public function setPassword($password): void
     {
         $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param mixed $roles
+     */
+    public function setRoles($roles): void
+    {
+        $this->roles = $roles;
     }
 
 }

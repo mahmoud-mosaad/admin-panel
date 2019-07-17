@@ -1,8 +1,4 @@
 
-drop database if exists IntCoreTaskDB;
-
-create database IntCoreTaskDB;
-
 use IntCoreTaskDB;
 
 create table users(
@@ -23,7 +19,16 @@ create table roles(
 	name varchar(100) not null
 	);
 
+
 create table user_roles(
-	user_id int primary key,
-	role_id int primary key
+	user_id int,
+	role_id int,
+    auth boolean,
+    primary key(user_id,role_id)
 	);
+
+
+insert into roles (name) values("select");
+insert into roles (name) values("create");
+insert into roles (name) values("update");
+insert into roles (name) values("delete");
