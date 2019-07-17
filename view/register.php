@@ -27,7 +27,7 @@
 
   <?php
 
-        session_start();
+/*        session_start();
 
         require_once 'User.php';
 
@@ -47,13 +47,13 @@
         }
 
         }
-  ?>
+  */?>
 
   <div class="container">
     <div class="card card-register mx-auto mt-5">
       <div class="card-header">Register an Account</div>
       <div class="card-body">
-        <form action="index.php?controller=UserController&method=add" method="post" id="registerForm">
+        <form action="../index.php?controller=UserController&method=register" method="post" id="registerForm">
           <div class="form-group">
             <div class="form-label-group">
               <input type="text" id="name" name="name" class="form-control" placeholder="Name" required="required" autofocus="autofocus" value="<?php echo (isset($_POST['name']) ? $_POST['name'] : ''); ?>">

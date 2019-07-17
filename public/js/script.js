@@ -67,7 +67,7 @@
 
     if($("#submitRegister").length !== 0) {
 
-    document.getElementById("submitRegister").addEventListener("click", function () {
+        document.getElementById("submitRegister").addEventListener("click", function () {
         
         var submitForm = true;
         
@@ -157,11 +157,15 @@
     });
 
      $('#inputPassword').on('keyup', function () {
-        
-        if (!$('[name="inputPasswordLogin"]')){
+
+        if ($('#inputPassword').attr('name')!="inputPasswordLogin"){
+
+
             if ($('#inputPassword').val().length == 0 ){
                 $('#inputPassword').removeClass('is-invalid');
                 $('#inputPassword').removeClass('is-valid');
+                $('#confirmPassword').removeClass('is-invalid');
+                $('#confirmPassword').removeClass('is-valid');
             }
              
              if ($('#inputPassword').val().length >= 1 && $('#inputPassword').val().length < 8 && $('#inputPassword').val() !== "Default text"){

@@ -3,6 +3,7 @@
 require './controller/UserController.php';
 require './controller/CategoryController.php';
 
+
 if (isset($_GET['controller'])
     && isset($_GET['method'])
     && method_exists($_GET['controller'],$_GET['method'])
@@ -12,6 +13,6 @@ if (isset($_GET['controller'])
     call_user_func(array($controller,$_GET['method']));
 }else{
 
-    header('location: view/404.php');
+    header('location: view/register.php');
     exit;
 }
