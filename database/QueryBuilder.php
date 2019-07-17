@@ -103,8 +103,8 @@ class QueryBuilder extends connection
 
      public function search($table ,$category, $value)
      {
-        $query = $this->pdo->prepare("select * from {$table} where {$category}=:".$category);
-        $query->bindValue(':'.$category, $value);
+        $query = $this->pdo->prepare("select * from {$table} where {$category} like '$value%'");
+        //$query->bindValue(':'.$category, $value);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_CLASS);
      }
@@ -140,19 +140,19 @@ class QueryBuilder extends connection
     {
         if(strlen($name) && strlen($email))
         {
-            $query = $this->pdo->prepare("select * from {$table} where name=:name AND email=:email");
-            $query->bindValue(':name',$name);
-            $query->bindValue(':email',$email);
+            $query = $this->pdo->prepare("select * from {$table} where name like '$name%' AND email like '$email%'");
         }
         if(!strlen($name) && strlen($email))
         {
-            $query = $this->pdo->prepare("select * from {$table} where email=:email");
-            $query->bindValue(':email',$email);
+            $query = $this->pdo->prepare("select * from {$table} where email like '$email%' ");
         }
         if(strlen($name) && !strlen($email))
         {
-            $query = $this->pdo->prepare("select * from {$table} where name=:name");
-            $query->bindValue(':name',$name);
+            $query = $this->pdo->prepare("select * from {$table} where name like '$name%' ");
+        }
+        if(!strlen($name) && !strlen($email))
+        {
+            $query = $this->pdo->prepare("select * from {$table} ");
         }
         $query->execute();
         return $query->fetchAll(PDO::FETCH_CLASS);

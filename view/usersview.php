@@ -48,7 +48,7 @@
                 <button><a href='./index.php?controller=UserController&method=OrderNameZ'>Z-A</a></button>
                 <br/>
                 <br/>
-
+                <th> Id </th>
                 <th> Name </th>
                 <th> Email </th>
                 <th> password </th>
@@ -62,9 +62,10 @@
                 "
                 <tr>
                     <form action='./index.php?edit={$user->id}&controller=UserController&method=edit' method='POST'>
-                        <td><input type='text' name='name' value={$user->name} /></td>
-                        <td>  <input type='email' name='email' value={$user->email} /></td>
-                        <td>  <input type='text' name='password' value={$user->password} /></td>
+                        <td>{$user->id}</td>
+                        <td><input type='text' name='name' value='{$user->name}' /></td>
+                        <td>  <input type='email' name='email' value='{$user->email}' /></td>
+                        <td>  <input type='text' name='password' value='{$user->password}' /></td>
                         <td>
                         select <input type=\"checkbox\" id=\"select\" name=\"select\" value=\"1\" ". (($roles[$user->id]['select'] == 1)?'checked':'') . ">
                         create <input type=\"checkbox\" id=\"create\" name=\"create\" value=\"2\" ". (($roles[$user->id]['create'] == 1)?'checked':'') . ">

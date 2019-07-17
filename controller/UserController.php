@@ -51,9 +51,6 @@ class UserController
 
     public function show()
     {
-
-        //$users = $this->model->retrieveAll("users");
-
         $users = $this->model->retrieveAllUsers();
         $roles = $this->model->retrieveAllUsersRoles($users);
         require('./view/usersview.php');
@@ -81,12 +78,14 @@ class UserController
     {
         $users = $this->model->retrieveOrderName("users","ASC");
         $roles = $this->model->retrieveAllUsersRoles($users);
+
         require('./view/usersview.php');
     }
     public function OrderNamez()
     {
         $users = $this->model->retrieveOrderName("users","DESC");
         $roles = $this->model->retrieveAllUsersRoles($users);
+
         require('./view/usersview.php');
     }
 
@@ -94,6 +93,7 @@ class UserController
     {
         $users = $this->model->filter("users",$_POST['name'],$_POST['email']);
         $roles = $this->model->retrieveAllUsersRoles($users);
+
         require('./view/usersview.php');
     }
 }
