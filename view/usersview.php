@@ -6,7 +6,15 @@
         <input type="text" name="name" placeholder="Name" />
         <input type="email" name="email" placeholder="Email" />
         <input type="password" name="password" placeholder="password" />
-        <input type="submit" name="submit" />
+
+        <input type="password" name="password" placeholder="confirm password">
+
+        select <input type="checkbox" id="select" name="select" value="1">
+        create <input type="checkbox" id="create" name="create" value="2">
+        update <input type="checkbox" id="update" name="update" value="3">
+        delete <input type="checkbox" id="delete" name="delete" value="4">
+
+        <input type="submit" name="Create User" />
     </form>
     <br/>
     <br/>
@@ -28,19 +36,25 @@
 
             <?php
                 foreach($users as $user){
-                echo(
+                echo
                 "
                 <tr>
                     <form action='./index.php?edit={$user->id}&controller=UserController&method=edit' method='POST'>
                         <td><input type='text' name='name' value={$user->name} /></td>
                         <td>  <input type='email' name='email' value={$user->email} /></td>
                         <td>  <input type='text' name='password' value={$user->password} /></td>
+                        <td>
+                        select <input type=\"checkbox\" id=\"select\" name=\"select\" value=\"1\" ". (($roles[$user->id]['select'] == 1)?'checked':'') . ">
+                        create <input type=\"checkbox\" id=\"create\" name=\"create\" value=\"2\" ". (($roles[$user->id]['create'] == 1)?'checked':'') . ">
+                        update <input type=\"checkbox\" id=\"update\" name=\"update\" value=\"3\" ". (($roles[$user->id]['update'] == 1)?'checked':'') . ">
+                        delete <input type=\"checkbox\" id=\"delete\" name=\"delete\" value=\"4\" ". (($roles[$user->id]['delete'] == 1)?'checked':'') . ">
+                        </td>
+
                         <td>  <input type='submit' name='edit' value='Edit' /> </td>
                     </form>
                     <td><button><a href='./index.php?delete={$user->id}&controller=UserController&method=delete'>delete</a></button></td>
                 </tr>
-                "
-                );
+                ";
                 }
             ?>
 

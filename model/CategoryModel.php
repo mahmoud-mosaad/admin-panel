@@ -26,7 +26,7 @@ class CategoryModel
     public function delete($id)
     {
         $delete = new QueryBuilder;
-        $delete->delete("category",$id);
+        //$delete->delete("category",$id);
         header("Location: ../index.php");
     }
 
