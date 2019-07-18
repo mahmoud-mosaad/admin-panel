@@ -110,9 +110,24 @@ class UserController
 
     public function filter()
     {
-        $users = $this->model->filter("users",$_POST['name'],$_POST['email']);
-        $roles = $this->model->retrieveAllUsersRoles($users);
+        $name ="";
+        $email = "";
 
+        if(isset($_POST['Recent']) || isset($_POST['Older']) || isset($_POST['A-Z']) || isset($_POST['Z-A']))
+        {
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $users = $this->model->filter("users",$_POST['name'],$_POST['email']);
+        }
+        else
+        {
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $users = $this->model->filter("users",$_POST['name'],$_POST['email']);
+        }
+
+        $roles = $this->model->retrieveAllUsersRoles($users);
         require('./view/usersview.php');
+
     }
 }

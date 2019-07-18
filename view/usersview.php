@@ -160,31 +160,25 @@
 
             <div class="card mb-3">
               <div class="card-body">
-              <form  action="./index.php?controller=UserController&method=filter"  method="post" class="right_table">
-                    <input  type="text" name="name" placeholder="Name">
-                    <input  type="text" name="email" placeholder="Email">
+              <form  action="./index.php?controller=UserController&method=filter" method="post" class="right_table">
+                    <input  type="text" name="name" placeholder="Name" value="<?=$name?>">
+                    <input  type="text" name="email" placeholder="Email" value="<?=$email?>">
+
                     <input  type="submit" name="submit" value="Filter">
+
+                    <input  type="submit" name="Recent" value="Recent">
+                    <input  type="submit" name="Older" value="Older">
+                    <input  type="submit" name="A-Z" value="A-Z">
+                    <input  type="submit" name="Z-A" value="Z-A">
                 </form>
               </div>
             </div>
-            <div class="card mb-3">
-              <div class="card-body">
-                <form  action="./index.php?controller=UserController&method=search"  method="post" class="right_table">
-                    <input  type="text" name="value" placeholder="type something...">
-                    <select name="search">
-                        <option value="name">By name</option>
-                        <option value="email">By email</option>
-                    </select>
-                    <input  type="submit" name="submit" value="Search" >
-                </form>
-              </div>
-            </div>
+            <!--   -->
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-bordered"  width="100%" cellspacing="0">
                 <thead>
 
-                <button><a href='./index.php?controller=UserController&method=recentAdded'>Recent</a></button>
                 <button><a href='./index.php?controller=UserController&method=OlderAdded'>Older</a></button>
                 <button><a href='./index.php?controller=UserController&method=OrderNameA'>A-Z</a></button>
                 <button><a href='./index.php?controller=UserController&method=OrderNameZ'>Z-A</a></button>

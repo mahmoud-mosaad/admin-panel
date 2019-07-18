@@ -120,6 +120,7 @@ class QueryBuilder extends connection
 
     public function Recent($table)
     {
+
         $query = $this->pdo->prepare("SELECT * FROM {$table} ORDER BY id DESC");
         $query->execute();
         return $query->fetchAll(PDO::FETCH_CLASS);
@@ -136,25 +137,95 @@ class QueryBuilder extends connection
         $query->execute();
         return $query->fetchAll(PDO::FETCH_CLASS);
     }
+
+
+
     public function filter($table,$name,$email)
     {
-        if(strlen($name) && strlen($email))
+        if(isset($_POST['Recent']))
         {
-            $query = $this->pdo->prepare("select * from {$table} where name like '$name%' AND email like '$email%'");
+            if(strlen($name) && strlen($email))
+                {
+                    $query = $this->pdo->prepare("select * from {$table} where name like '$name%' AND email like '$email%' ORDER BY id DESC");
+                }
+                if(!strlen($name) && strlen($email))
+                {
+                    $query = $this->pdo->prepare("select * from {$table} where email like '$email%' ORDER BY id DESC");
+                }
+                if(strlen($name) && !strlen($email))
+                {
+                    $query = $this->pdo->prepare("select * from {$table} where name like '$name%' ORDER BY id DESC");
+                }
+                if(!strlen($name) && !strlen($email))
+                {
+                    $query = $this->pdo->prepare("select * from {$table} ORDER BY id DESC ");
+                }
+                $query->execute();
+                return $query->fetchAll(PDO::FETCH_CLASS);
         }
-        if(!strlen($name) && strlen($email))
+        if(isset($_POST['Older']))
         {
-            $query = $this->pdo->prepare("select * from {$table} where email like '$email%' ");
+            if(strlen($name) && strlen($email))
+                {
+                    $query = $this->pdo->prepare("select * from {$table} where name like '$name%' AND email like '$email%' ORDER BY id ASC");
+                }
+                if(!strlen($name) && strlen($email))
+                {
+                    $query = $this->pdo->prepare("select * from {$table} where email like '$email%' ORDER BY id ASC");
+                }
+                if(strlen($name) && !strlen($email))
+                {
+                    $query = $this->pdo->prepare("select * from {$table} where name like '$name%' ORDER BY id ASC");
+                }
+                if(!strlen($name) && !strlen($email))
+                {
+                    $query = $this->pdo->prepare("select * from {$table} ORDER BY id ASC ");
+                }
+                $query->execute();
+                return $query->fetchAll(PDO::FETCH_CLASS);
         }
-        if(strlen($name) && !strlen($email))
+        if(isset($_POST['Older']))
         {
-            $query = $this->pdo->prepare("select * from {$table} where name like '$name%' ");
+            if(strlen($name) && strlen($email))
+                {
+                    $query = $this->pdo->prepare("select * from {$table} where name like '$name%' AND email like '$email%' ORDER BY id ASC");
+                }
+                if(!strlen($name) && strlen($email))
+                {
+                    $query = $this->pdo->prepare("select * from {$table} where email like '$email%' ORDER BY id ASC");
+                }
+                if(strlen($name) && !strlen($email))
+                {
+                    $query = $this->pdo->prepare("select * from {$table} where name like '$name%' ORDER BY id ASC");
+                }
+                if(!strlen($name) && !strlen($email))
+                {
+                    $query = $this->pdo->prepare("select * from {$table} ORDER BY id ASC ");
+                }
+                $query->execute();
+                return $query->fetchAll(PDO::FETCH_CLASS);
         }
-        if(!strlen($name) && !strlen($email))
+        else
         {
-            $query = $this->pdo->prepare("select * from {$table} ");
+            if(strlen($name) && strlen($email))
+            {
+                $query = $this->pdo->prepare("select * from {$table} where name like '$name%' AND email like '$email%'");
+            }
+            if(!strlen($name) && strlen($email))
+            {
+                $query = $this->pdo->prepare("select * from {$table} where email like '$email%' ");
+            }
+            if(strlen($name) && !strlen($email))
+            {
+                $query = $this->pdo->prepare("select * from {$table} where name like '$name%' ");
+            }
+            if(!strlen($name) && !strlen($email))
+            {
+                $query = $this->pdo->prepare("select * from {$table} ");
+            }
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_CLASS);
         }
-        $query->execute();
-        return $query->fetchAll(PDO::FETCH_CLASS);
+
     }
 }
