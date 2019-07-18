@@ -190,6 +190,8 @@ class UserController
 
     public function show()
     {
+        $name ="";
+        $email = "";
         $users = $this->model->retrieveAllUsers();
         $roles = $this->model->retrieveAllUsersRoles($users);
         require('view/usersview.php');
@@ -232,7 +234,6 @@ class UserController
     {
         $name ="";
         $email = "";
-
         if(isset($_POST['Recent']) || isset($_POST['Older']) || isset($_POST['A-Z']) || isset($_POST['Z-A']))
         {
             $name = $_POST['name'];
@@ -248,7 +249,6 @@ class UserController
 
         $roles = $this->model->retrieveAllUsersRoles($users);
         require('./view/usersview.php');
-
     }
 
     function setCookies($email){

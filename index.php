@@ -4,6 +4,7 @@ require './controller/UserController.php';
 require './controller/CategoryController.php';
 
 
+
 if (isset($_GET['controller'])
     && isset($_GET['method'])
     && method_exists($_GET['controller'],$_GET['method'])
