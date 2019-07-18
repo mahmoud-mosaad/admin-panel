@@ -9,6 +9,24 @@ class UserController
         $this->model= new UserModel();
     }
 
+    public function register(){
+
+        require 'entity/User.php';
+
+        $roles = array();
+
+        $roles['select'] = array(1 , 0);
+        $roles['create'] = array(2 , 0);
+        $roles['update'] = array(3 , 0);
+        $roles['delete'] = array(4 , 0);
+
+        $user = new User($_POST['name'],$_POST['inputEmail'],$_POST['inputPassword'], $roles);
+
+        $this->model->add($user);
+        return header("Location: index.php?controller=UserController&method=show");
+
+    }
+
     public function add()
     {
         require 'entity/User.php';
@@ -53,6 +71,7 @@ class UserController
     {
         $users = $this->model->retrieveAllUsers();
         $roles = $this->model->retrieveAllUsersRoles($users);
+
         require('./view/usersview.php');
     }
     public function search()
