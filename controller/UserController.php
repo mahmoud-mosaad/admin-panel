@@ -262,6 +262,12 @@ class UserController
         return header("Location: index.php?controller=UserController&method=show");
     }
 
+<<<<<<< HEAD
+    public function show()
+    {
+        $name ="";
+        $email = "";
+=======
     public function show(){
 
         if(!isset($_SESSION['userId'])){
@@ -272,6 +278,7 @@ class UserController
         $row = $this->model->retrieve($_SESSION['userId']);
         $id = $row['id'];
         $userRoles = $this->model->retrieveUserRoles($id);
+>>>>>>> 09af68041740110ce3353b769144f6c70567919a
         $users = $this->model->retrieveAllUsers();
         $roles = $this->model->retrieveAllUsersRoles($users);
         require('view/usersview.php');
@@ -315,7 +322,6 @@ class UserController
     {
         $name ="";
         $email = "";
-
         if(isset($_POST['Recent']) || isset($_POST['Older']) || isset($_POST['A-Z']) || isset($_POST['Z-A']))
         {
             $name = $_POST['name'];
@@ -331,7 +337,6 @@ class UserController
 
         $roles = $this->model->retrieveAllUsersRoles($users);
         require('./view/usersview.php');
-
     }
 
 }
