@@ -3,10 +3,33 @@
 class UserModel
 {
 
-    public function changePassword($id, $password){
+    public function changePassword($email, $password){
         $edit = new QueryBuilder;
-        $edit->edit("id",$id,"users",[
+        $done = $edit->edit("email",$email,"users",[
             'password'=>$password
+        ]);
+        if ($done === true){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    public function deleteToken($id)
+    {
+        $delete = new QueryBuilder;
+        $delete->delete("tokens",'email',$id);
+
+    }
+
+    public function addToken($token, $email, $expire){
+        $insert = new QueryBuilder;
+        $insert->insert("tokens",[
+            'token' => $token,
+            'email' => $email,
+            'expire'=> $expire
         ]);
     }
 
@@ -60,6 +83,12 @@ class UserModel
     {
         $select = new QueryBuilder;
         return $select->selectAll($table);
+    }
+
+    public function retrieveAllWhere($table, $column, $value)
+    {
+        $select = new QueryBuilder;
+        return $select->selectAllWhere($table, $column, $value);
     }
 
     public function retrieveAllUsers()

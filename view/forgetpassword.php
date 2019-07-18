@@ -26,23 +26,22 @@
       <div class="card-header">Forget Password</div>
       <div class="card-body">
         <div class="text-center mb-4">
-            <a class="d-block small" href="index.php?controller=UserController&method=resetPassword">reset Password</a>
-
             <p>Enter your email address and we will send you instructions on how to reset your password.</p>
         </div>
-        <form>
+        <form id="forgetPasswordFrom" method="post" action="index.php?controller=UserController&method=submit_forgetPassword">
           <div class="form-group">
             <div class="form-label-group">
-              <input type="email" id="inputEmail" class="form-control" placeholder="Enter email address" required="required" autofocus="autofocus">
+              <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Enter email address" required="required" autofocus="autofocus">
               <label for="inputEmail">Enter email address</label>
             </div>
           </div>
-          <a class="btn btn-primary btn-block" href="login.html">Send Email</a>
+            <button id="submitForgetPassword" name="submitForgetPassword" type="submit" class="btn btn-primary btn-block">Send Email</button>
+
         </form>
-        <div class="text-center">
-          <a class="d-block small mt-3" href="register.html">Register an Account</a>
-          <a class="d-block small" href="login.html">Login Page</a>
-        </div>
+          <div class="text-center">
+              <a class="d-block small mt-3" href="index.php?controller=UserController&method=register">Register an Account</a>
+              <a class="d-block small" href="index.php?controller=UserController&method=login">Login Page</a>
+          </div>
       </div>
     </div>
   </div>

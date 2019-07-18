@@ -4,6 +4,17 @@ require './database/connection.php';
 class QueryBuilder extends connection
 {
 
+    public function selectAllWhere($table, $column, $value)
+    {
+        $query = $this->pdo->prepare("select * from {$table} where $column =:$column");
+        $query->bindValue(':'.$column,$value);
+        $query->execute();
+        if ($query->rowCount() <= 0 ){
+            return false;
+        }
+        return $query->fetchAll(PDO::FETCH_CLASS);
+    }
+
     public function selectAll($table)
     {
         $query = $this->pdo->prepare("select * from {$table}");
@@ -95,8 +106,9 @@ class QueryBuilder extends connection
                 $query->bindValue(':'.$column,$id);
                 $query->execute();
             }
+            return true;
         }catch(Exception $e){
-            die('whoops, something went wrong');
+            return false;
         }
     }
 

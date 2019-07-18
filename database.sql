@@ -28,6 +28,13 @@ create table user_roles(
 	);
 
 
+create table tokens(
+    token  varchar(250),
+	user_id int not null,
+    expire timestamp not null
+);
+
+
 insert into roles (name) values("select");
 insert into roles (name) values("create");
 insert into roles (name) values("update");

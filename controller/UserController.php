@@ -58,15 +58,7 @@ class UserController
             if ($_POST['inputPassword'] != $_POST['confirmPassword']){
                 return 'confirm password should equal your password';
             }
-
-
-/*
-            $to_mail = $_POST['inputEmail'];
-            $subject = "Thanks";
-            $msg = "Dear " . $_POST['name'] . " ... Thanks for registration in IntCore";
-*/
-
-                return true;
+            return true;
         }else{
             // repeated email
             return 'This email is already registered';
@@ -93,6 +85,11 @@ class UserController
             }else{
                 $this->add(0);
                 $_SESSION['userId'] = $_POST['inputEmail'];
+                $to_mail = $_POST['inputEmail'];
+                $subject = "Thanks";
+                $msg = "Dear " . $_POST['name'] . " ... Thanks for registration in admin-panel";
+                mail($to_mail, $subject, $msg);
+
                 header("Location: index.php?controller=UserController&method=home");
                 //password_hash($password, PASSWORD_DEFAULT)
 
@@ -163,24 +160,66 @@ class UserController
     }
 
     public function resetPassword(){
-        require 'view/resetpassword.php';
+        if (isset($_GET['token'])){
+            $row = $this->model->retrieveAllWhere("tokens", "token", $_GET['token']);
+            if ($row === false){
+                header('Location: index.php?controller=UserController&method=login');
+            }else {
+                $time = time();
+                if (strtotime($row[0]->expire) > $time) {
+                    $_SESSION['token'] = $_GET['token'];
+                    require 'view/resetpassword.php';
+                }
+                else{
+                    header('Location: index.php?controller=UserController&method=login');
+                }
+            }
+        }
+        else{
+            header('Location: index.php?controller=UserController&method=login&error=there is no token');
+        }
+
     }
 
     public function submit_resetPassword(){
-        // need token
-
         if (isset($_POST['inputPassword']) && isset($_POST['confirmPassword'])
             && $_POST['inputPassword'] != $_POST['confirmPassword']){
             $msg = 'confirm password should equal your password';
             header('Location: index.php?controller=UserController&method=resetPassword&error='.$msg);
         }else{
-            // get id from url and tokens
-            //$this->model->changePassword(,$_POST['inputPassword']);
+
+            $row = $this->model->retrieveAllWhere("tokens", "token", $_SESSION['token']);
+
+            $this->model->changePassword($row[0]->email,$_POST['inputPassword']);
+
+            $this->model->deleteToken($row[0]->email);
+            unset($_SESSION['token']);
+            header('Location: index.php?controller=UserController&method=login');
+
         }
     }
 
     public function forgetPassword(){
         require 'view/forgetpassword.php';
+    }
+
+    public function submit_forgetPassword(){
+
+        $token = uniqid();
+        $timestamp = time() + 86400;
+
+        $this->model->addToken($token, $_POST['inputEmail'] ,date('Y-m-d H:i:s',$timestamp));
+
+
+        $to_mail = $_POST['inputEmail'];
+        $subject = "admin-panel";
+        $msg = " <a class=\"d-block small\" href=\"http://localhost:8080/admin-panel/index.php?controller=UserController&method=resetPassword&token=$token\">reset Password</a>";
+        $headers = "Content-Type: text/html; charset=UTF-8\r\n";
+
+        mail($to_mail, $subject, $msg, $headers);
+
+        header('Location: index.php?controller=UserController&method=login');
+
     }
 
     public function add($value)
@@ -224,6 +263,12 @@ class UserController
     }
 
     public function show(){
+
+        if(!isset($_SESSION['userId'])){
+            // not logged in
+            header('Location: index.php?controller=UserController&method=login');
+            exit();
+        }
         $row = $this->model->retrieve($_SESSION['userId']);
         $id = $row['id'];
         $userRoles = $this->model->retrieveUserRoles($id);
