@@ -64,7 +64,7 @@
         });
     }
 
-
+    /*
     if($("#submitRegister").length !== 0) {
 
         document.getElementById("submitRegister").addEventListener("click", function () {
@@ -119,7 +119,7 @@
             form.submit();
         }
     });
-    }
+    }*/
 
     $('input[type="file"]'). change(function(){
        //alert(this.files[0].size);

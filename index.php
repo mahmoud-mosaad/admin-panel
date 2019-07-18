@@ -13,6 +13,6 @@ if (isset($_GET['controller'])
     call_user_func(array($controller,$_GET['method']));
 }else{
 
-    header('location: view/register.php');
+    header('location: index.php?controller=UserController&method=register');
     exit;
 }

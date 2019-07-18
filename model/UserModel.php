@@ -80,6 +80,12 @@ class UserModel
         return $select->selectid($email);
     }
 
+    public function retrieveuser($email)
+    {
+        $select = new QueryBuilder;
+        return $select->selectuser($email);
+    }
+
     public function retrieveRecent($table)
     {
         $select = new QueryBuilder;
