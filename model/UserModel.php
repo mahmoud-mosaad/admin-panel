@@ -97,6 +97,7 @@ class UserModel
         $select = new QueryBuilder;
         return $select->Recent($table);
     }
+
     public function retrieveOlder($table)
     {
         $select = new QueryBuilder;
