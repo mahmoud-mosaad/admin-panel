@@ -36,8 +36,7 @@ class UserModel
         $edit = new QueryBuilder;
         $edit->edit("id",$id,"users",[
             'name' => $user->getName(),
-            'email' => $user->getEmail(),
-            'password'=>$user->getPassword()
+            'email' => $user->getEmail()
         ]);
 
         foreach ($user->getRoles() as $item){
@@ -90,6 +89,12 @@ class UserModel
     {
         $select = new QueryBuilder;
         return $select->selectuser($email);
+    }
+
+    public function retrieveUserRoles($id)
+    {
+        $select = new QueryBuilder;
+        return $select->selectUserRoles($id);
     }
 
     public function retrieveRecent($table)

@@ -159,7 +159,7 @@ class UserController
 
         //$row = $this->model->retrieveuser($_SESSION['userId']);
 
-        require 'view/home.html';
+        $this->show();
     }
 
     public function resetPassword(){
@@ -223,12 +223,15 @@ class UserController
         return header("Location: index.php?controller=UserController&method=show");
     }
 
-    public function show()
-    {
+    public function show(){
+        $row = $this->model->retrieve($_SESSION['userId']);
+        $id = $row['id'];
+        $userRoles = $this->model->retrieveUserRoles($id);
         $users = $this->model->retrieveAllUsers();
         $roles = $this->model->retrieveAllUsersRoles($users);
         require('view/usersview.php');
     }
+
     public function search()
     {
         if($_POST['search']=="name") $users = $this->model->retrieveSearchedUsers("users",$_POST["search"],$_POST["value"]);

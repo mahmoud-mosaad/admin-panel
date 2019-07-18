@@ -28,7 +28,7 @@
         <form action="index.php?controller=UserController&method=submit_login" method="post" id="loginForm">
           <div class="form-group">
             <div class="form-label-group">
-              <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus" value="<?php echo (isset($_POST['email']) ? $_POST['email'] : ''); ?>">
+              <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus" value="<?php echo (isset($_POST['inputEmail']) ? $_POST['inputEmail'] : ''); ?>">
               <label for="inputEmail">Email address</label>
             </div>
           </div>
