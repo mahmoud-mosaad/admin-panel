@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 require './controller/UserController.php';
 require './controller/CategoryController.php';
@@ -14,6 +15,6 @@ if (isset($_GET['controller'])
     call_user_func(array($controller,$_GET['method']));
 }else{
 
-    header('location: index.php?controller=UserController&method=register');
+    header('location: index.php?controller=UserController&method=login');
     exit;
 }

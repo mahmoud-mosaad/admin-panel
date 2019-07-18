@@ -28,7 +28,7 @@
         <form action="index.php?controller=UserController&method=submit_login" method="post" id="loginForm">
           <div class="form-group">
             <div class="form-label-group">
-              <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus" value="<?php echo (isset($_POST['email']) ? $_POST['email'] : ''); ?>">
+              <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus" value="<?php echo (isset($_POST['inputEmail']) ? $_POST['inputEmail'] : ''); ?>">
               <label for="inputEmail">Email address</label>
             </div>
           </div>
@@ -43,7 +43,13 @@
                 <input id="rememberme" name="rememberme" type="checkbox" class="form-check-input" value="1">
               <label class="form-check-label" for="exampleCheck1">Remember Me</label>
             </div>
-
+            <?php
+            if (isset($_GET['error'])){
+                echo '<div class="alert alert-danger" role="alert">';
+                echo $_GET['error'];
+                echo '</div>';
+            }
+            ?>
           <button id="submitLogin" name="submitLogin" type="submit" class="btn btn-primary btn-block">Login</button>
 
         <!--  <a class="btn btn-primary btn-block" href="index.html">Login</a>-->

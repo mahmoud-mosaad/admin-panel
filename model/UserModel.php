@@ -3,6 +3,13 @@
 class UserModel
 {
 
+    public function changePassword($id, $password){
+        $edit = new QueryBuilder;
+        $edit->edit("id",$id,"users",[
+            'password'=>$password
+        ]);
+    }
+
     public function add(User $user)
     {
         $insert = new QueryBuilder;
@@ -21,7 +28,6 @@ class UserModel
                 'auth' => $item[1]
             ]);
         }
-
     }
 
     public function edit(User $user, $id)
@@ -30,8 +36,7 @@ class UserModel
         $edit = new QueryBuilder;
         $edit->edit("id",$id,"users",[
             'name' => $user->getName(),
-            'email' => $user->getEmail(),
-            'password'=>$user->getPassword()
+            'email' => $user->getEmail()
         ]);
 
         foreach ($user->getRoles() as $item){
@@ -84,6 +89,12 @@ class UserModel
     {
         $select = new QueryBuilder;
         return $select->selectuser($email);
+    }
+
+    public function retrieveUserRoles($id)
+    {
+        $select = new QueryBuilder;
+        return $select->selectUserRoles($id);
     }
 
     public function retrieveRecent($table)
