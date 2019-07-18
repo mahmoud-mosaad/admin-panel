@@ -57,7 +57,13 @@
               </div>
             </div>
           </div>
-            
+            <?php
+                if (isset($_GET['error'])){
+                    echo '<div class="alert alert-danger" role="alert">';
+                    echo $_GET['error'];
+                    echo '</div>';
+                }
+            ?>
             <button id="submitRegister" name="register" type="submit" class="btn btn-primary btn-block">Register</button>
 
 <!--
@@ -66,7 +72,6 @@
         </form>
         <div class="text-center">
           <a class="d-block small mt-3" href="index.php?controller=UserController&method=login">Login Page</a>
-          <a class="d-block small" href="index.php?controller=UserController&method=forgetPassword">Forgot Password?</a>
         </div>
       </div>
     </div>

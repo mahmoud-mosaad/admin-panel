@@ -9,6 +9,43 @@ class UserController
         $this->model = new UserModel();
     }
 
+    function setCookies($email){
+        $exp = time() + (60*60*24*30*12); // 1 Hour
+        setcookie("userId", $email, $exp);
+        $row = $this->model->retrieveuser($email);
+        setcookie("userP", $row['password'], $exp);
+    }
+
+    function checkCookies(){
+        if (isset($_COOKIE['userId'])){
+            $row = $this->model->retrieveuser($_COOKIE['userId']);
+            if ($row != false && $_COOKIE['userP'] === $row['password']){
+                $_SESSION['userId'] = $_COOKIE['userId'];
+                header("Location: index.php?controller=UserController&method=home");
+                exit();
+            }
+        }
+    }
+
+    public function checkSession() {
+        //if user has login and session has not been removed
+        if(isset($_SESSION['userId']))
+        {
+            //logged in so redirect
+            header('Location: index.php?controller=UserController&method=home');
+            exit();
+        }
+    }
+
+    public function logout() {
+        unset($_SESSION['userId']);
+        session_destroy();
+        setcookie("userId", NULL, time() - 600);
+        setcookie("userP", NULL, time() - 600);
+        header("location: index.php?controller=UserController&method=login");
+        exit();
+    }
+
     public function check_register(){
 
         if ($_POST['name'] == '' || $_POST['inputEmail'] == '' || $_POST['inputPassword'] ==''){
@@ -16,11 +53,12 @@ class UserController
         }
 
         $row = $this->model->retrieve($_POST['inputEmail']);
-        if ($row == false){
+        if ($row === false){
 
             if ($_POST['inputPassword'] != $_POST['confirmPassword']){
                 return 'confirm password should equal your password';
             }
+
 
 /*
             $to_mail = $_POST['inputEmail'];
@@ -28,18 +66,38 @@ class UserController
             $msg = "Dear " . $_POST['name'] . " ... Thanks for registration in IntCore";
 */
 
-            if ($this->add(0)){
-                $_SESSION['userId'] = $_POST['inputEmail'];
-                header("Location: index.php?controller=UserController&method=home");
-                exit();
-            }
-
+                return true;
         }else{
             // repeated email
-            return "Email exist";
+            return 'This email is already registered';
         }
+        return false;
+    }
 
-        return true;
+
+    public function register(){
+
+        $this->checkSession();
+
+        $this->checkCookies();
+
+        require 'view/register.php';
+    }
+
+    public function submit_register(){
+
+        if ($_POST) {
+            $msg = $this->check_register();
+            if ($msg !== true){
+                header('Location: index.php?controller=UserController&method=register&error='.$msg);
+            }else{
+                $this->add(0);
+                $_SESSION['userId'] = $_POST['inputEmail'];
+                header("Location: index.php?controller=UserController&method=home");
+                //password_hash($password, PASSWORD_DEFAULT)
+
+            }
+        }
     }
 
     public function check_login(){
@@ -61,27 +119,10 @@ class UserController
                 return 'wrong password .. enter valid password';
             }
         }
-        return 'this email not registered yet';
-    }
-
-    public function home(){
-
-        session_start();
-
-        if(!isset($_SESSION['userId'])){
-            // not logged in
-            header('Location: index.php?controller=UserController&method=login');
-            exit();
-        }
-
-        //$row = $this->model->retrieveuser($_SESSION['userId']);
-
-        require 'view/home.html';
+        return 'This email is not registered yet';
     }
 
     public function login(){
-
-        session_start();
 
         $this->checkSession();
 
@@ -96,9 +137,7 @@ class UserController
             $msg = $this->check_login();
 
             if ($msg !== true){
-                echo('<h1>' . $msg . '<h1>');
-                header('Location: index.php?controller=UserController&method=login');
-
+                header('Location: index.php?controller=UserController&method=login&error='.$msg);
             }else{
                 if (isset($_POST['rememberme'])){
                     $this->setCookies($_POST['inputEmail']);
@@ -110,42 +149,38 @@ class UserController
         }
     }
 
-    public function register(){
+    public function home(){
 
-        session_start();
+        if(!isset($_SESSION['userId'])){
+            // not logged in
+            header('Location: index.php?controller=UserController&method=login');
+            exit();
+        }
 
-        $this->checkSession();
+        //$row = $this->model->retrieveuser($_SESSION['userId']);
 
-        $this->checkCookies();
-
-        require 'view/register.php';
+        require 'view/home.html';
     }
 
-    public function submit_register(){
+    public function resetPassword(){
+        require 'view/resetpassword.php';
+    }
 
-        if (!empty($_POST)) {
-            $msg = $this->check_register();
-            if ($msg !== true){
-                die('<h1>' . $msg . '<h1>');
-                header('Location: index.php?controller=UserController&method=register');
+    public function submit_resetPassword(){
+        // need token
 
-            }else{
-                require 'entity/User.php';
-
-                $roles = array();
-
-                $roles['select'] = array(1 , 0);
-                $roles['create'] = array(2 , 0);
-                $roles['update'] = array(3 , 0);
-                $roles['delete'] = array(4 , 0);
-
-                $user = new User($_POST['name'],$_POST['inputEmail'],$_POST['inputPassword'], $roles);
-                //password_hash($password, PASSWORD_DEFAULT)
-                $this->model->add($user);
-                header("Location: index.php?controller=UserController&method=home");
-
-            }
+        if (isset($_POST['inputPassword']) && isset($_POST['confirmPassword'])
+            && $_POST['inputPassword'] != $_POST['confirmPassword']){
+            $msg = 'confirm password should equal your password';
+            header('Location: index.php?controller=UserController&method=resetPassword&error='.$msg);
+        }else{
+            // get id from url and tokens
+            //$this->model->changePassword(,$_POST['inputPassword']);
         }
+    }
+
+    public function forgetPassword(){
+        require 'view/forgetpassword.php';
     }
 
     public function add($value)
@@ -233,43 +268,6 @@ class UserController
         $users = $this->model->filter("users",$_POST['name'],$_POST['email']);
         $roles = $this->model->retrieveAllUsersRoles($users);
         require('./view/usersview.php');
-    }
-
-    function setCookies($email){
-        $exp = time() + (60*60*24*30*12); // 1 Hour
-        setcookie("userId", $email, $exp);
-        $row = $this->model->retrieveuser($email);
-        setcookie("userP", $row['password'], $exp);
-    }
-
-    function checkCookies(){
-        if (isset($_COOKIE['userId'])){
-            $row = $this->model->retrieveuser($_COOKIE['userId']);
-            if ($row != false && $_COOKIE['userP'] === $row['password']){
-                $_SESSION['userId'] = $_COOKIE['userId'];
-                header("Location: index.php?controller=UserController&method=home");
-                exit();
-            }
-        }
-    }
-
-    public function checkSession() {
-        //if user has login and session has not been removed
-        if(isset($_SESSION['userId']))
-        {
-            //logged in so redirect
-            header('Location: index.php?controller=UserController&method=home');
-            exit();
-        }
-    }
-
-    public function logout() {
-        unset($_SESSION['userId']);
-        session_destroy();
-        setcookie("userId", NULL, time() - 600);
-        setcookie("userP", NULL, time() - 600);
-        header("location: index.php?controller=UserController&method=login");
-        exit();
     }
 
 }

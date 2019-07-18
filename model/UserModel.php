@@ -3,6 +3,13 @@
 class UserModel
 {
 
+    public function changePassword($id, $password){
+        $edit = new QueryBuilder;
+        $edit->edit("id",$id,"users",[
+            'password'=>$password
+        ]);
+    }
+
     public function add(User $user)
     {
         $insert = new QueryBuilder;
@@ -21,7 +28,6 @@ class UserModel
                 'auth' => $item[1]
             ]);
         }
-
     }
 
     public function edit(User $user, $id)

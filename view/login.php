@@ -43,7 +43,13 @@
                 <input id="rememberme" name="rememberme" type="checkbox" class="form-check-input" value="1">
               <label class="form-check-label" for="exampleCheck1">Remember Me</label>
             </div>
-
+            <?php
+            if (isset($_GET['error'])){
+                echo '<div class="alert alert-danger" role="alert">';
+                echo $_GET['error'];
+                echo '</div>';
+            }
+            ?>
           <button id="submitLogin" name="submitLogin" type="submit" class="btn btn-primary btn-block">Login</button>
 
         <!--  <a class="btn btn-primary btn-block" href="index.html">Login</a>-->
