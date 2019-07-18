@@ -230,7 +230,6 @@ class UserController
 
     public function filter()
     {
-<<<<<<< HEAD
         $name ="";
         $email = "";
 
@@ -247,9 +246,6 @@ class UserController
             $users = $this->model->filter("users",$_POST['name'],$_POST['email']);
         }
 
-=======
-        $users = $this->model->filter("users",$_POST['name'],$_POST['email']);
->>>>>>> d243d7515a8cb648a4041c320dc585f3049def8d
         $roles = $this->model->retrieveAllUsersRoles($users);
         require('./view/usersview.php');
 

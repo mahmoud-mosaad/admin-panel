@@ -198,24 +198,15 @@ class QueryBuilder extends connection
                 $query->execute();
                 return $query->fetchAll(PDO::FETCH_CLASS);
         }
-        if(isset($_POST['Older']))
+        if(isset($_POST['A-Z']))
         {
-            if(strlen($name) && strlen($email))
-                {
-                    $query = $this->pdo->prepare("select * from {$table} where name like '$name%' AND email like '$email%' ORDER BY id ASC");
-                }
-                if(!strlen($name) && strlen($email))
-                {
-                    $query = $this->pdo->prepare("select * from {$table} where email like '$email%' ORDER BY id ASC");
-                }
-                if(strlen($name) && !strlen($email))
-                {
-                    $query = $this->pdo->prepare("select * from {$table} where name like '$name%' ORDER BY id ASC");
-                }
-                if(!strlen($name) && !strlen($email))
-                {
-                    $query = $this->pdo->prepare("select * from {$table} ORDER BY id ASC ");
-                }
+                $query = $this->pdo->prepare("SELECT * FROM {$table} where name like '$name%' ORDER BY name ASC");
+                $query->execute();
+                return $query->fetchAll(PDO::FETCH_CLASS);
+        }
+        if(isset($_POST['Z-A']))
+        {
+                $query = $this->pdo->prepare("SELECT * FROM {$table} where name like '$name%' ORDER BY name DESC");
                 $query->execute();
                 return $query->fetchAll(PDO::FETCH_CLASS);
         }
