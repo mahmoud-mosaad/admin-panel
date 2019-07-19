@@ -154,8 +154,6 @@ class UserController
             exit();
         }
 
-        //$row = $this->model->retrieveuser($_SESSION['userId']);
-
         $this->show();
     }
 
@@ -262,12 +260,6 @@ class UserController
         return header("Location: index.php?controller=UserController&method=show");
     }
 
-<<<<<<< HEAD
-    public function show()
-    {
-        $name ="";
-        $email = "";
-=======
     public function show(){
 
         if(!isset($_SESSION['userId'])){
@@ -278,65 +270,128 @@ class UserController
         $row = $this->model->retrieve($_SESSION['userId']);
         $id = $row['id'];
         $userRoles = $this->model->retrieveUserRoles($id);
->>>>>>> 09af68041740110ce3353b769144f6c70567919a
         $users = $this->model->retrieveAllUsers();
         $roles = $this->model->retrieveAllUsersRoles($users);
+        $name ="";
+        $email = "";
         require('view/usersview.php');
     }
 
     public function search()
     {
+        if(!isset($_SESSION['userId'])){
+            // not logged in
+            header('Location: index.php?controller=UserController&method=login');
+            exit();
+        }
+        if (empty($_POST)) {
+            header('Location: index.php?controller=UserController&method=show');
+            exit();
+        }
+        $row = $this->model->retrieve($_SESSION['userId']);
+        $id = $row['id'];
+        $userRoles = $this->model->retrieveUserRoles($id);
         if($_POST['search']=="name") $users = $this->model->retrieveSearchedUsers("users",$_POST["search"],$_POST["value"]);
         if($_POST['search']=="email") $users = $this->model->retrieveSearchedUsers("users",$_POST["search"],$_POST["value"]);
         $roles = $this->model->retrieveAllUsersRoles($users);
+        $name = "";
+        #email = "";
         require('./view/usersview.php');
     }
     public function recentAdded()
     {
+        if(!isset($_SESSION['userId'])){
+            // not logged in
+            header('Location: index.php?controller=UserController&method=login');
+            exit();
+        }
+        $row = $this->model->retrieve($_SESSION['userId']);
+        $id = $row['id'];
+        $userRoles = $this->model->retrieveUserRoles($id);
         $users = $this->model->retrieveRecent("users");
         $roles = $this->model->retrieveAllUsersRoles($users);
+        $name = "";
+        $email = "";
         require('./view/usersview.php');
     }
     public function OlderAdded()
     {
+        if(!isset($_SESSION['userId'])){
+            // not logged in
+            header('Location: index.php?controller=UserController&method=login');
+            exit();
+        }
+        $row = $this->model->retrieve($_SESSION['userId']);
+        $id = $row['id'];
+        $userRoles = $this->model->retrieveUserRoles($id);
         $users = $this->model->retrieveOlder("users");
         $roles = $this->model->retrieveAllUsersRoles($users);
+        $name = "";
+        $email = "";
         require('./view/usersview.php');
     }
     public function OrderNameA()
     {
+        if(!isset($_SESSION['userId'])){
+            // not logged in
+            header('Location: index.php?controller=UserController&method=login');
+            exit();
+        }
+        $row = $this->model->retrieve($_SESSION['userId']);
+        $id = $row['id'];
+        $userRoles = $this->model->retrieveUserRoles($id);
         $users = $this->model->retrieveOrderName("users","ASC");
         $roles = $this->model->retrieveAllUsersRoles($users);
-
+        $name = "";
+        $email = "";
         require('./view/usersview.php');
     }
     public function OrderNamez()
     {
+        if(!isset($_SESSION['userId'])){
+            // not logged in
+            header('Location: index.php?controller=UserController&method=login');
+            exit();
+        }
+        $row = $this->model->retrieve($_SESSION['userId']);
+        $id = $row['id'];
+        $userRoles = $this->model->retrieveUserRoles($id);
         $users = $this->model->retrieveOrderName("users","DESC");
         $roles = $this->model->retrieveAllUsersRoles($users);
-
+        $name = "";
+        $email = "";
         require('./view/usersview.php');
     }
 
     public function filter()
     {
-        $name ="";
-        $email = "";
+        if(!isset($_SESSION['userId'])){
+            // not logged in
+            header('Location: index.php?controller=UserController&method=login');
+            exit();
+        }
+        if (empty($_POST)) {
+            header('Location: index.php?controller=UserController&method=show');
+            exit();
+        }
+        $row = $this->model->retrieve($_SESSION['userId']);
+        $id = $row['id'];
+        $userRoles = $this->model->retrieveUserRoles($id);
+
         if(isset($_POST['Recent']) || isset($_POST['Older']) || isset($_POST['A-Z']) || isset($_POST['Z-A']))
         {
-            $name = $_POST['name'];
-            $email = $_POST['email'];
             $users = $this->model->filter("users",$_POST['name'],$_POST['email']);
         }
         else
         {
-            $name = $_POST['name'];
-            $email = $_POST['email'];
             $users = $this->model->filter("users",$_POST['name'],$_POST['email']);
         }
 
         $roles = $this->model->retrieveAllUsersRoles($users);
+        $name ="";
+        $email = "";
         require('./view/usersview.php');
     }
+
 
 }

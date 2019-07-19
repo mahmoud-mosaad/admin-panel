@@ -30,6 +30,12 @@
         </div>
         <form action="index.php?controller=UserController&method=submit_resetPassword" method="post" id="resetPasswordForm">
             <div class="form-group">
+                <div class="form-group">
+                    <div class="form-label-group">
+                        <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Enter email address" required="required" autofocus="autofocus">
+                        <label for="inputEmail">Enter email address</label>
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="col-md-12">
                         <div class="form-label-group">
