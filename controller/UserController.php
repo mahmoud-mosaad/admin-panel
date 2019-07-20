@@ -274,7 +274,7 @@ class UserController
         $roles = $this->model->retrieveAllUsersRoles($users);
         $name ="";
         $email = "";
-        require('view/usersview.php');
+        require('view/dashboard.php');
     }
 
     public function search()
@@ -296,7 +296,7 @@ class UserController
         $roles = $this->model->retrieveAllUsersRoles($users);
         $name = "";
         #email = "";
-        require('./view/usersview.php');
+        require('./view/dashboard.php');
     }
     public function recentAdded()
     {
@@ -312,7 +312,7 @@ class UserController
         $roles = $this->model->retrieveAllUsersRoles($users);
         $name = "";
         $email = "";
-        require('./view/usersview.php');
+        require('./view/dashboard.php');
     }
     public function OlderAdded()
     {
@@ -328,7 +328,7 @@ class UserController
         $roles = $this->model->retrieveAllUsersRoles($users);
         $name = "";
         $email = "";
-        require('./view/usersview.php');
+        require('./view/dashboard.php');
     }
     public function OrderNameA()
     {
@@ -344,7 +344,7 @@ class UserController
         $roles = $this->model->retrieveAllUsersRoles($users);
         $name = "";
         $email = "";
-        require('./view/usersview.php');
+        require('./view/dashboard.php');
     }
     public function OrderNamez()
     {
@@ -360,7 +360,7 @@ class UserController
         $roles = $this->model->retrieveAllUsersRoles($users);
         $name = "";
         $email = "";
-        require('./view/usersview.php');
+        require('./view/dashboard.php');
     }
 
     public function filter()
@@ -390,7 +390,7 @@ class UserController
         $roles = $this->model->retrieveAllUsersRoles($users);
         $name ="";
         $email = "";
-        require('./view/usersview.php');
+        require('./view/dashboard.php');
     }
 
 
