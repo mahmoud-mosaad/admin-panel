@@ -2,7 +2,7 @@
 <html>
     <body>
         <h1>Add a new category !</h1>
-        <form action="./index.php?controller=CategoryController&method=add" method="POST">
+        <form action="../../index.php" method="POST">
             <input type="text" name="name" placeholder="Name" />
             <textarea name="description"></textarea>
             <input type="submit" name="submit" />

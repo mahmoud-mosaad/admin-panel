@@ -64,39 +64,39 @@
         });
     }
 
-
+    /*
     if($("#submitRegister").length !== 0) {
 
-    document.getElementById("submitRegister").addEventListener("click", function () {
+        document.getElementById("submitRegister").addEventListener("click", function () {
         
         var submitForm = true;
         
-        if (isMail($('#email').val())) {
-            setValid('#email');
+        if (isMail($('#inputEmail').val())) {
+            setValid('#inputEmail');
         } else {
-            setInvalid('#email');
+            setInvalid('#inputEmail');
             submitForm = false;
             alert('Your Email is invalid');
         }
         
-        if ($('#password').val().length >= 8 && $('#password').val() !== "Default text"){
+        if ($('#inputPassword').val().length >= 8 && $('#inputPassword').val() !== "Default text"){
 
-           if (isPassword($('#password').val())){
-                setValid('#password');
+           if (isPassword($('#inputPassword').val())){
+                setValid('#inputPassword');
            }else{
-                setInvalid('#password');
+                setInvalid('#inputPassword');
                 submitForm = false;
                 alert('Your password is invalid');
            }
 
        }
        
-         if ($('#password').val() != $('#password-confirmed').val()) { 
-            setInvalid('#password-confirmed');
+        if ($('#inputPassword').val() != $('#confirmPassword').val()) { 
+            setInvalid('#confirmPassword');
             submitForm = false;
             alert('Confirm Password not equal Password');
          }else{
-            setValid('#password-confirmed');
+            setValid('#confirmPassword');
          }
         
         
@@ -119,9 +119,9 @@
             form.submit();
         }
     });
-    }
+    }*/
 
-   $('input[type="file"]'). change(function(){
+    $('input[type="file"]'). change(function(){
        //alert(this.files[0].size);
        var file = this.files[0].type.toString();
        var ext = file.substring(file.length-3)
@@ -155,48 +155,54 @@
             $('#show_hide_password i').addClass( "fa-eye" );
         }
     });
-    
- $('#password').on('keyup', function () {
-     
-    if ($('#password').val().length == 0 ){
-        $('#password').removeClass('is-invalid');
-        $('#password').removeClass('is-valid');
-    }
-     
-     if ($('#password').val().length >= 1 && $('#password').val().length < 8 && $('#password').val() !== "Default text"){
-            setInvalid('#password');
-     }
-     
-     if ($('#password').val().length >= 8 && $('#password').val() !== "Default text"){
-         
-        if (isPassword($('#password').val())){
-                setValid('#password');
-        }else{
-                setInvalid('#password');
+
+     $('#inputPassword').on('keyup', function () {
+
+        if ($('#inputPassword').attr('name')!="inputPasswordLogin"){
+
+
+            if ($('#inputPassword').val().length == 0 ){
+                $('#inputPassword').removeClass('is-invalid');
+                $('#inputPassword').removeClass('is-valid');
+                $('#confirmPassword').removeClass('is-invalid');
+                $('#confirmPassword').removeClass('is-valid');
+            }
+             
+             if ($('#inputPassword').val().length >= 1 && $('#inputPassword').val().length < 8 && $('#inputPassword').val() !== "Default text"){
+                    setInvalid('#inputPassword');
+             }
+             
+             if ($('#inputPassword').val().length >= 8 && $('#inputPassword').val() !== "Default text"){
+                 
+                if (isPassword($('#inputPassword').val())){
+                        setValid('#inputPassword');
+                }else{
+                        setInvalid('#inputPassword');
+                }
+                 
+            }
         }
-         
-    }
-});
+    });
    
-     
-    $('password-confirmed', '#password-new-confirmed').bind("cut copy paste",function(e) {
+   
+    $('confirmPassword', '#password-new-confirmed').bind("cut copy paste",function(e) {
          e.preventDefault();
     });
    
    
- $('#password-confirmed').on('keyup', function () {
-     if ($('#password-confirmed').val().length > 0 && $('#password-confirmed').val() != "Default text"){
-        if ($('#password').val() != $('#password-confirmed').val()) { 
-            setInvalid('#password-confirmed');
+ $('#confirmPassword').on('keyup', function () {
+     if ($('#confirmPassword').val().length > 0 && $('#confirmPassword').val() != "Default text"){
+        if ($('#inputPassword').val() != $('#confirmPassword').val()) { 
+            setInvalid('#confirmPassword');
          }else{
-            setValid('#password-confirmed');
+            setValid('#confirmPassword');
          }
     }
 });
  
  
-  $('#password').on('keyup', function () {
-        document.getElementById('password-confirmed').value = "";
+  $('#inputPassword').on('keyup', function () {
+        document.getElementById('confirmPassword').value = "";
   });
  
   $('#password-old').on('keyup', function () {
@@ -244,18 +250,18 @@
 });
  
 
- $('#email').on('keyup', function () {
+ $('#inputEmail').on('keyup', function () {
     
-    if ($('#email').val().length == 0 ){
-        $('#email').removeClass('is-invalid');
-        $('#email').removeClass('is-valid');
+    if ($('#inputEmail').val().length == 0 ){
+        $('#inputEmail').removeClass('is-invalid');
+        $('#inputEmail').removeClass('is-valid');
     }
     
-    if ($('#email').val().length > 0 && $('#email').val() !== "Default text"){
-        if (isMail($('#email').val())) {
-            setValid('#email');
+    if ($('#inputEmail').val().length > 0 && $('#inputEmail').val() !== "Default text"){
+        if (isMail($('#inputEmail').val())) {
+            setValid('#inputEmail');
         } else {
-            setInvalid('#email');
+            setInvalid('#inputEmail');
         }
     }
 });
@@ -289,3 +295,4 @@ function isPassword(password){
     }
     return false;
 }
+
