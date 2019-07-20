@@ -29,8 +29,8 @@ create table user_roles(
 
 
 create table tokens(
-    token  varchar(250),
-	user_id int not null,
+    token  varchar(250) not null,
+	  email varchar(100) not null unique,
     expire timestamp not null
 );
 
