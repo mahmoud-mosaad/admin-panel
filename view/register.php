@@ -16,7 +16,7 @@
 					<br><br><br><br><br><br>
 					<h4 class="text-center">Register</h4>
 					<p class="text-center">Get started with your free account</p>
-					<form action="index.php?controller=UserController&method=submit_register" method="post" id="registerForm">
+					<form action="<?php echo BASEURL.'User/submit_register'; ?>" method="post" id="registerForm">
 						<div class="form-group input-group">
 							<div class="input-group-prepend">
 							    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
@@ -62,7 +62,7 @@
 					        <button id="submitRegister" name="register" type="submit" class="btn btn-primary btn-block"> Register  </button>
 					    </div>       
 					    <p class="text-center">Have an account? 
-					    	<a href="index.php?controller=UserController&method=login">Log In</a> 
+					    	<a href="<?php echo BASEURL.'User/login'; ?>">Log In</a>
 					    </p>
 					    <br>
 					</form>

@@ -149,7 +149,7 @@
                 <?php if(!empty($userRoles) &&$userRoles[0]->auth == 1) : ?>
                 <div class="card mb-3">
                     <div class="card-body">
-                        <form  action="index.php?controller=UserController&method=filter" method="post" class="right_table">
+                        <form  action="<?php echo BASEURL.'User/filter'; ?>" method="post" class="right_table">
                             <input  type="text" name="name" placeholder="Name" value="<?=$name?>">
                             <input  type="text" name="email" placeholder="Email" value="<?=$email?>">
 
@@ -267,7 +267,6 @@
                 $("a").click(function(event) {
                     var href = $(this).prop('href');
                     if(href.includes('delete')){
-                        event.preventDefault();
                         var id = href.substring(href.indexOf('delete=')+7, href.length);
                         $.ajax({
                             type: 'GET',
@@ -277,8 +276,8 @@
                                 loadDoc();
                             }
                         });
-                    }else if(href.includes('edit')){
                         event.preventDefault();
+                    }else if(href.includes('edit')){
                         var id = href.substring(href.indexOf('edit=')+5, href.length);
                         $.ajax({
                             type: 'POST',
@@ -293,6 +292,7 @@
                                 loadDoc();
                             }
                         });
+                        event.preventDefault();
                     }
                 });
             }

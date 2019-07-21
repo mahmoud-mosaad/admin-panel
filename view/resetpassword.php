@@ -17,7 +17,7 @@
 
 					<h4 class="text-center">Reset Password</h4>
 					<p class="text-center">Enter your email address and enter your new Password and confirm it</p>
-					<form action="index.php?controller=UserController&method=submit_resetPassword" method="post" id="resetPasswordForm">
+					<form action="<?php echo BASEURL.'User/submit_resetPassword'; ?>" method="post" id="resetPasswordForm">
 					    <div class="form-group input-group">
 					    	<div class="input-group-prepend">
 							    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
@@ -56,8 +56,8 @@
 					    <div class="form-group">
 					        <button id="submitResetPassword" name="submitResetPassword" type="submit" class="btn btn-primary btn-block"> Reset Password </button>
 					    </div>       
-					    <p class="text-center">Have an account? <a href="index.php?controller=UserController&method=register">Register</a> </p>
-					    <p class="text-center">Already registered? <a href="index.php?controller=UserController&method=login">Login</a> </p>
+					    <p class="text-center">Have an account? <a href="<?php echo BASEURL.'User/register'; ?>">Register</a> </p>
+					    <p class="text-center">Already registered? <a href="<? echo BASEURL.'User/login'; ?>">Login</a> </p>
 
 					</form>
 					<br><br><br><br><br><br><br><br><br>

@@ -37,7 +37,7 @@ class UserController extends Controller
             $row = $this->getModel()->retrieveuser($_COOKIE['userId']);
             if ($row != false && $_COOKIE['userP'] === $row['password']){
                 $_SESSION['userId'] = $_COOKIE['userId'];
-                header("Location: index.php?controller=UserController&method=home");
+                header('Location:'.BASEURL.'User/home');
                 exit();
             }
         }
@@ -48,7 +48,7 @@ class UserController extends Controller
         if(isset($_SESSION['userId']))
         {
             //logged in so redirect
-            header('Location: index.php?controller=UserController&method=home');
+            header('Location:'.BASEURL.'User/home');
             exit();
         }
     }
@@ -96,7 +96,7 @@ class UserController extends Controller
         if ($_POST) {
             $msg = $this->check_register();
             if ($msg !== true){
-                header('Location: index.php?controller=UserController&method=register&error='.$msg);
+                header('Location:'.BASEURL.'User/register?error='.$msg);
             }else{
                 $this->save(0);
                 $_SESSION['userId'] = $_POST['inputEmail'];
@@ -105,7 +105,7 @@ class UserController extends Controller
                 $msg = "Dear " . $_POST['name'] . " ... Thanks for registration in admin-panel";
                 mail($to_mail, $subject, $msg);
 
-                header("Location: index.php?controller=UserController&method=home");
+                header('Location:'.BASEURL.'User/home');
                 //password_hash($password, PASSWORD_DEFAULT)
 
             }
@@ -165,7 +165,7 @@ class UserController extends Controller
         if (isset($_GET['token'])){
             $row = $this->getModel()->retrieveAllWhere("tokens", "token", $_GET['token']);
             if ($row === false){
-                header('Location: index.php?controller=UserController&method=login');
+                header('Location:'.BASEURL.'User/login');
             }else {
                 $time = time();
                 if (strtotime($row[0]->expire) > $time) {
@@ -173,12 +173,12 @@ class UserController extends Controller
                     require 'view/resetpassword.php';
                 }
                 else{
-                    header('Location: index.php?controller=UserController&method=login');
+                    header('Location:'.BASEURL.'User/login');
                 }
             }
         }
         else{
-            header('Location: index.php?controller=UserController&method=login&error=there is no token');
+            header('Location:'.BASEURL.'User/login?error=there is no token');
         }
 
     }
@@ -189,12 +189,12 @@ class UserController extends Controller
             $row = $this->getModel()->retrieveAllWhere("tokens", "email", $_POST['inputEmail']);
             if ($row['email'] != $_POST['inputEmail']){
                 $msg = "That's not your mail";
-                header('Location: index.php?controller=UserController&method=resetPassword&error=' . $msg);
+                header('Location:'.BASEURL.'User/resetPassword?error=' . $msg);
             }else{
                 if (isset($_POST['inputPassword']) && isset($_POST['confirmPassword'])
                     && $_POST['inputPassword'] != $_POST['confirmPassword']) {
                     $msg = 'confirm password should equal your password';
-                    header('Location: index.php?controller=UserController&method=resetPassword&error=' . $msg);
+                    header('Location:'.BASEURL.'User/resetPassword?error=' . $msg);
                 } else {
 
                     $row = $this->getModel()->retrieveAllWhere("tokens", "token", $_SESSION['token']);
@@ -203,13 +203,13 @@ class UserController extends Controller
 
                     $this->getModel()->deleteToken($row[0]->email);
                     unset($_SESSION['token']);
-                    header('Location: index.php?controller=UserController&method=login');
+                    header('Location:'.BASEURL.'User/login');
                     exit();
                 }
             }
         }else{
             $msg = "enter Your email";
-            header('Location: index.php?controller=UserController&method=resetPassword&error=' . $msg);
+            header('Location:'.BASEURL.'User/resetPassword?error='.$msg);
         }
     }
 
@@ -227,12 +227,12 @@ class UserController extends Controller
 
         $to_mail = $_POST['inputEmail'];
         $subject = "admin-panel";
-        $msg = " <a class=\"d-block small\" href=\"http://localhost:8080/admin-panel/index.php?controller=UserController&method=resetPassword&token=$token\">reset Password</a>";
+        $msg = " <a class=\"d-block small\" href=\"" .BASEURL.'User/resetPassword?token='.$token."\">reset Password</a>";
         $headers = "Content-Type: text/html; charset=UTF-8\r\n";
 
         mail($to_mail, $subject, $msg, $headers);
 
-        header('Location: index.php?controller=UserController&method=login');
+        header('Location:'.BASEURL.'User/login');
     }
 
     public function save($value)
@@ -302,7 +302,7 @@ class UserController extends Controller
 
         if(!isset($_SESSION['userId'])){
             // not logged in
-            header('Location: index.php?controller=UserController&method=login');
+            header('Location:'.BASEURL.'User/login');
             exit();
         }
 
@@ -320,7 +320,7 @@ class UserController extends Controller
     {
         if(!isset($_SESSION['userId'])){
             // not logged in
-            header('Location: index.php?controller=UserController&method=login');
+            header('Location:'.BASEURL.'User/login');
             exit();
         }
         $row = $this->getModel()->retrieve($_SESSION['userId']);
@@ -337,11 +337,11 @@ class UserController extends Controller
     {
         if(!isset($_SESSION['userId'])){
             // not logged in
-            header('Location: index.php?controller=UserController&method=login');
+            header('Location:'.BASEURL.'User/login');
             exit();
         }
         if (empty($_POST)) {
-            header('Location: index.php?controller=UserController&method=show');
+            header('Location:'.BASEURL.'User/show');
             exit();
         }
         $row = $this->getModel()->retrieve($_SESSION['userId']);
@@ -358,7 +358,7 @@ class UserController extends Controller
     {
         if(!isset($_SESSION['userId'])){
             // not logged in
-            header('Location: index.php?controller=UserController&method=login');
+            header('Location:'.BASEURL.'User/login');
             exit();
         }
         $row = $this->getModel()->retrieve($_SESSION['userId']);
@@ -374,7 +374,7 @@ class UserController extends Controller
     {
         if(!isset($_SESSION['userId'])){
             // not logged in
-            header('Location: index.php?controller=UserController&method=login');
+            header('Location:'.BASEURL.'User/login');
             exit();
         }
         $row = $this->getModel()->retrieve($_SESSION['userId']);
@@ -390,7 +390,7 @@ class UserController extends Controller
     {
         if(!isset($_SESSION['userId'])){
             // not logged in
-            header('Location: index.php?controller=UserController&method=login');
+            header('Location:'.BASEURL.'User/login');
             exit();
         }
         $row = $this->getModel()->retrieve($_SESSION['userId']);
@@ -406,7 +406,7 @@ class UserController extends Controller
     {
         if(!isset($_SESSION['userId'])){
             // not logged in
-            header('Location: index.php?controller=UserController&method=login');
+            header('Location:'.BASEURL.'User/login');
             exit();
         }
         $row = $this->getModel()->retrieve($_SESSION['userId']);
@@ -423,11 +423,11 @@ class UserController extends Controller
     {
         if(!isset($_SESSION['userId'])){
             // not logged in
-            header('Location: index.php?controller=UserController&method=login');
+            header('Location:'.BASEURL.'User/login');
             exit();
         }
         if (empty($_POST)) {
-            header('Location: index.php?controller=UserController&method=show');
+            header('Location:'.BASEURL.'User/show');
             exit();
         }
         $row = $this->getModel()->retrieve($_SESSION['userId']);

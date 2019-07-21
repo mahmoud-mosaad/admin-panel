@@ -13,7 +13,7 @@
             <div class="row justify-content-center">
                 <div class="col-3">
                     <br><br><br><br><br><br><br>
-                    <div class="error-template">
+                    <div class="error-template" style="margin-left: 350px">
                         <h1>
                             Oops!</h1>
                         <h2>
@@ -22,11 +22,11 @@
                             Sorry, an error has occured, Requested page not found!
                         </div>
                         <div class="error-actions">
-                            <a href="index.php?controller=UserController&method=home" class="btn btn-primary btn-lg">
+                            <a href="<?php echo BASEURL.'User/home'; ?>" class="btn btn-primary btn-lg">
                                 <span class="glyphicon glyphicon-home"></span>
                                 Take Me Home 
                             </a>
-                            <a href="index.php?controller=UserController&method=contact" class="btn btn-default btn-lg">
+                            <a href="<?php echo BASEURL.'User/contact'; ?>" class="btn btn-default btn-lg">
                                 <span class="glyphicon glyphicon-envelope"></span> 
                                 Contact Support 
                             </a>
