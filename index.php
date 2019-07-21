@@ -3,17 +3,26 @@ session_start();
 
 require './controller/UserController.php';
 require './controller/CategoryController.php';
+require './config.php';
 
 
-if (isset($_GET['controller'])
-    && isset($_GET['method'])
-    && method_exists($_GET['controller'],$_GET['method'])
-    && is_callable($_GET['controller'],$_GET['method'])){
+$url = explode('/',filter_var(rtrim($_GET['url'],'/'),FILTER_SANITIZE_URL));
 
-    $controller = new $_GET['controller']();
-    call_user_func(array($controller,$_GET['method']));
-}else{
 
-    header('location: index.php?controller=UserController&method=login');
-    exit;
+if(isset($_GET['url'])){
+    if (isset($url[1])
+        && method_exists($url[0]."Controller",$url[1])
+        && is_callable($url[0]."Controller",$url[1]))
+    {
+        $cont = $url[0]."Controller";
+        $controller = new $cont();
+        call_user_func(array($controller,$url[1]));
+    }
+    else
+    {
+        $url = array();
+        header('location:'.$baseUrl.'User/notfound');
+        exit;
+    }
+
 }
