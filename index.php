@@ -12,16 +12,21 @@ require './config.php';
 
 
 $url = explode('/',filter_var(rtrim($_GET['url'],'/'),FILTER_SANITIZE_URL));
-
+$param=[];
+$controller = $url[0];
+$method = $url[1];
+unset($url[0]);
+unset($url[1]);
+$param=array_merge($param,$url);
 
 if(isset($_GET['url'])){
-    if (isset($url[1])
-        && method_exists($url[0]."Controller",$url[1])
-        && is_callable($url[0]."Controller",$url[1]))
+    if (isset($method)
+        && method_exists($controller."Controller",$method)
+        && is_callable($controller."Controller",$method))
     {
-        $cont = $url[0]."Controller";
-        $controller = new $cont();
-        call_user_func(array($controller,$url[1]));
+        $cont = $controller."Controller";
+        $cont = new $cont();
+        call_user_func(array($cont,$method),$param);
     }
     else
     {
