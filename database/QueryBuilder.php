@@ -82,6 +82,18 @@ class QueryBuilder extends connection
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function selectemail($id)
+    {
+        $query = $this->pdo->prepare("select email from users where id=:id");
+        $query->bindValue(':id', $id);
+        $query->execute();
+        if ($query->rowCount() <= 0 ){
+            return false;
+        }
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+
     public function insert($table , $para)
     {
         $para_name = implode(', ',array_keys($para));

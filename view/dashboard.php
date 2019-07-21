@@ -32,6 +32,10 @@
                 </button>
             </td>
         <?php endif; ?>
+        <td>
+            <p id="<?php echo 'er'.$user->id;?>"></p>
+        </td>
+
 
     </tr><br><br>
 

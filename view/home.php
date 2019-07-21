@@ -128,7 +128,8 @@
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="fas fa-table"></i>
-                    Add Users</div>
+                    Add Users
+                </div>
                 <div class="card mb-3">
                     <div class="card-body">
 
@@ -143,6 +144,7 @@
 
                         <input type="button" id="addbutton" name="addbutton" value="Add" />
                     </div>
+                    <p id="adderrorname"></p><p id="adderroremail"></p><p id="adderrorpassword"></p><p id="adderrorconfirmpassword"></p>
                 </div>
 
                 <?php endif; ?>
@@ -279,19 +281,33 @@
                         event.preventDefault();
                     }else if(href.includes('edit')){
                         var id = href.substring(href.indexOf('edit=')+5, href.length);
-                        $.ajax({
-                            type: 'POST',
-                            url: '<?php echo BASEURL.'User/edit?'?>edit='+id,
+                        var response = $.ajax({ type: "POST",
+                            url: <?php echo "'".BASEURL."User/check_edit_user'"; ?>,
+                            async: false,
                             data: 'name=' + $('#n'+id).val()
+                                + '&email=' + $('#e'+id).val()
+                                + '&id=' + id
+                        }).responseText;
+                        if (response != '1'){
+                            $('#er' + id).html(response);
+                        }else{
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '<?php echo BASEURL.'User/edit?'?>edit='+id,
+                                data: 'name=' + $('#n'+id).val()
                                 + '&email=' + $('#e'+id).val()
                                 + '&select=' + $('#s'+id).prop("checked")
                                 + '&create=' + $('#c'+id).prop("checked")
                                 + '&update=' + $('#u'+id).prop("checked")
                                 + '&delete=' + $('#d'+id).prop("checked"),
-                            success: function(){
-                                loadDoc();
-                            }
-                        });
+                                success: function(){
+                                    loadDoc();
+                                }
+                            });
+                            $('#er' + id).html('success');
+
+                        }
                         event.preventDefault();
                     }
                 });
@@ -304,30 +320,62 @@
     $(document).ready(function(){
         loadDoc();
         $('#addbutton').click(function(){
-
-            $.ajax({
-                type: 'POST',
-                url: '<?php echo BASEURL.'User/add';?>',
+            var response = $.ajax({ type: "POST",
+                dataType: "json",
+                url: <?php echo "'".BASEURL."User/check_create_user'"; ?>,
+                async: false,
                 data: 'name=' + $('#addname').val()
-                    + '&inputEmail=' + $('#addemail').val()
-                    + '&inputPassword=' + $('#addpassword').val()
-                    + '&confirmPassword=' + $('#addconfirmpassword').val()
-                    + '&select=' + $('#addselect').prop("checked")
-                    + '&create=' + $('#addcreate').prop("checked")
-                    + '&update=' + $('#addupdate').prop("checked")
-                    + '&delete=' + $('#adddelete').prop("checked"),
-                success: function(){
-                    $('#addname').val('');
-                    $('#addemail').val('');
-                    $('#addpassword').val('');
-                    $('#addconfirmpassword').val('');
-                    $('#addselect').prop("checked", false);
-                    $('#addcreate').prop("checked", false);
-                    $('#addupdate').prop("checked", false);
-                    $('#adddelete').prop("checked", false);
-                    loadDoc();
-                }
-            });
+                    + '&email=' + $('#addemail').val()
+                    + '&password=' + $('#addpassword').val()
+                    + '&confirmpassword=' + $('#addconfirmpassword').val()
+            }).responseText;
+            if (response != '1'){
+                var arr = $.parseJSON(response);
+                if (arr['name']!='')
+                    $('#adderrorname').html(arr['name'])
+                else
+                    $('#adderrorname').html('')
+                if (arr['email']!='')
+                    $('#adderroremail').html(arr['email'])
+                else
+                    $('#adderroremail').html('')
+                if (arr['password']!='')
+                    $('#adderrorpassword').html(arr['password'])
+                else
+                    $('#adderrorpassword').html('')
+                if (arr['confirmpassword']!='')
+                    $('#adderrorconfirmpassword').html(arr['confirmpassword'])
+                else
+                    $('#adderrorconfirmpassword').html('')
+
+            }else{
+
+                $.ajax({
+                    type: 'POST',
+                    url: <?php echo "'".BASEURL."User/add'"; ?>,
+                    data: 'name=' + $('#addname').val()
+                        + '&inputEmail=' + $('#addemail').val()
+                        + '&inputPassword=' + $('#addpassword').val()
+                        + '&confirmPassword=' + $('#addconfirmpassword').val()
+                        + '&select=' + $('#addselect').prop("checked")
+                        + '&create=' + $('#addcreate').prop("checked")
+                        + '&update=' + $('#addupdate').prop("checked")
+                        + '&delete=' + $('#adddelete').prop("checked"),
+                    success: function(){
+                        $('#addname').val('');
+                        $('#addemail').val('');
+                        $('#addpassword').val('');
+                        $('#addconfirmpassword').val('');
+                        $('#addselect').prop("checked", false);
+                        $('#addcreate').prop("checked", false);
+                        $('#addupdate').prop("checked", false);
+                        $('#adddelete').prop("checked", false);
+                        loadDoc();
+                    }
+                 });
+
+            }
+
         });
     });
 

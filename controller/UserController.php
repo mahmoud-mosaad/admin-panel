@@ -62,6 +62,77 @@ class UserController extends Controller
         exit();
     }
 
+    public function check_create_user(){
+
+        $arr = array();
+
+        if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['confirmpassword'])){
+
+            $arr['name'] = (empty($_POST['name'])? 'name required': '');
+            $arr['email'] = (empty($_POST['email'])? 'email required': '');
+            $arr['password'] = (empty($_POST['password'])? 'password required': '');
+            $arr['confirmpassword'] = (empty($_POST['confirmpassword'])? 'confirm password required': '');
+            $myJSON = json_encode($arr);
+
+            echo $myJSON;
+        }
+        else{
+            $row = $this->getModel()->retrieve($_POST['email']);
+            if ($row == false){
+                if ($_POST['password'] != $_POST['confirmpassword']){
+                    $arr['password'] =  'confirm password should equal your password';
+                    $myJSON = json_encode($arr);
+                    echo $myJSON;
+                }else{
+                    echo true;
+                }
+            }else{
+                // repeated email
+                $arr['email'] = 'This email is already registered';
+                $myJSON = json_encode($arr);
+                echo $myJSON;
+            }
+        }
+    }
+
+    public function check_edit_user()
+    {
+
+        if (empty($_POST['name']) && empty($_POST['email'])){
+            echo 'All data are required ... enter the empty data';
+        }else if (empty($_POST['name']) || empty($_POST['email'])){
+
+            $arr = array('name' => empty($_POST['name']),
+                'email' => empty($_POST['email'])
+            );
+
+            $error = '';
+            $first = true;
+            foreach($arr as $key => $value){
+                if ($value == true){
+                    $error.= ($first == true ?$key : ','.$key);
+                    $first = false;
+                }
+            }
+
+            echo $error . ' should be entered';
+        }else {
+
+            $row = $this->getModel()->retrieveemail($_POST['id']);
+            if ($row['email'] !== $_POST['email']) {
+                $row = $this->getModel()->retrieve($_POST['email']);
+                if ($row == false) {
+                    echo true;
+                } else {
+                    // repeated email
+                    echo 'This email is already registered';
+                }
+            } else {
+                echo true;
+            }
+        }
+    }
+
     public function check_register(){
 
         if (empty($_POST['name']) || empty($_POST['inputEmail']) || empty($_POST['inputPassword'])){
@@ -113,7 +184,7 @@ class UserController extends Controller
     }
 
     public function check_login(){
-        if ($_POST['inputEmail'] === "" || $_POST['inputPasswordLogin'] ===""){
+        if (empty($_POST['inputEmail']) || empty($_POST['inputPasswordLogin'])){
             return 'All data are required ... enter the empty data';
         }
 
@@ -123,7 +194,7 @@ class UserController extends Controller
 
             //checked username and password
             //if (password_verify($password, $row['password'])){
-            if ($row['password'] === $_POST['inputPasswordLogin']){
+            if (password_verify($_POST['inputPasswordLogin'], $row['password'])){
                 //if username and password true, then create session.
                 $_SESSION['userId'] = $_POST['inputEmail'];
                 return true;
@@ -199,7 +270,7 @@ class UserController extends Controller
 
                     $row = $this->getModel()->retrieveAllWhere("tokens", "token", $_SESSION['token']);
 
-                    $this->getModel()->changePassword($row[0]->email, $_POST['inputPassword']);
+                    $this->getModel()->changePassword($row[0]->email, password_hash($_POST['inputPassword'], PASSWORD_DEFAULT));
 
                     $this->getModel()->deleteToken($row[0]->email);
                     unset($_SESSION['token']);
@@ -246,7 +317,7 @@ class UserController extends Controller
         $roles['update'] = array(3 , ($value==0)?(0):(isset($_POST['update'])?1:0));
         $roles['delete'] = array(4 , ($value==0)?(0):(isset($_POST['delete'])?1:0));
 
-        $user = new User($_POST['name'],$_POST['inputEmail'],$_POST['inputPassword'], $roles);
+        $user = new User($_POST['name'],$_POST['inputEmail'],password_hash($_POST['inputPassword'], PASSWORD_DEFAULT), $roles);
 
         $this->getModel()->add($user);
         //return header("Location: index.php?controller=UserController&method=show");
@@ -264,7 +335,7 @@ class UserController extends Controller
         $roles['update'] = array(3 , $_POST['update'] == 'true' ? 1 : 0);
         $roles['delete'] = array(4 , $_POST['delete'] == 'true' ? 1 : 0);
 
-        $user = new User($_POST['name'],$_POST['inputEmail'],$_POST['inputPassword'], $roles);
+        $user = new User($_POST['name'],$_POST['inputEmail'],password_hash($_POST['inputPassword'], PASSWORD_DEFAULT), $roles);
 
         if ($_POST['inputPassword'] == $_POST['confirmPassword']) {
             $this->getModel()->add($user);
@@ -370,6 +441,7 @@ class UserController extends Controller
         $email = "";
         require('./view/dashboard.php');
     }
+
     public function OlderAdded()
     {
         if(!isset($_SESSION['userId'])){
@@ -386,6 +458,7 @@ class UserController extends Controller
         $email = "";
         require('./view/dashboard.php');
     }
+
     public function OrderNameA()
     {
         if(!isset($_SESSION['userId'])){
@@ -402,6 +475,7 @@ class UserController extends Controller
         $email = "";
         require('./view/dashboard.php');
     }
+
     public function OrderNamez()
     {
         if(!isset($_SESSION['userId'])){

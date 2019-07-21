@@ -6,8 +6,8 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
-		<link rel="stylesheet" type="text/css" href="public/css/style.css">
-		<script type="text/javascript"  src="public/js/script.js"></script>	
+		<link rel="stylesheet" type="text/css" href="../public/css/style.css">
+		<script type="text/javascript"  src="../public/js/script.js"></script>
 	</head>
 	<body>
 		<div class="container-fluid">

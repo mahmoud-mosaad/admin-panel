@@ -114,6 +114,12 @@ class UserModel
         return $select->selectid($email);
     }
 
+    public function retrieveemail($id)
+    {
+        $select = new QueryBuilder;
+        return $select->selectemail($id);
+    }
+
     public function retrieveuser($email)
     {
         $select = new QueryBuilder;
