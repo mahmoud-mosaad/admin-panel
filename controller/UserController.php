@@ -1,12 +1,13 @@
 <?php
 
 require "model/UserModel.php";
-class UserController
+require 'Controller.php';
+class UserController extends Controller
 {
-    private $model;
+
     public function __construct()
     {
-        $this->model = new UserModel();
+        parent::__construct(new UserModel());
     }
 
     /*
@@ -27,13 +28,13 @@ class UserController
     function setCookies($email){
         $exp = time() + (60*60*24*30*12); // 1 Hour
         setcookie("userId", $email, $exp);
-        $row = $this->model->retrieveuser($email);
+        $row = $this->getModel()->retrieveuser($email);
         setcookie("userP", $row['password'], $exp);
     }
 
     function checkCookies(){
         if (isset($_COOKIE['userId'])){
-            $row = $this->model->retrieveuser($_COOKIE['userId']);
+            $row = $this->getModel()->retrieveuser($_COOKIE['userId']);
             if ($row != false && $_COOKIE['userP'] === $row['password']){
                 $_SESSION['userId'] = $_COOKIE['userId'];
                 header("Location: index.php?controller=UserController&method=home");
@@ -66,7 +67,7 @@ class UserController
         if (empty($_POST['name']) || empty($_POST['inputEmail']) || empty($_POST['inputPassword'])){
             return 'All data are required ... enter the empty data';
         }
-        $row = $this->model->retrieve($_POST['inputEmail']);
+        $row = $this->getModel()->retrieve($_POST['inputEmail']);
         if ($row == false){
 
             if ($_POST['inputPassword'] != $_POST['confirmPassword']){
@@ -116,7 +117,7 @@ class UserController
             return 'All data are required ... enter the empty data';
         }
 
-        $row = $this->model->retrieveuser($_POST['inputEmail']);
+        $row = $this->getModel()->retrieveuser($_POST['inputEmail']);
 
         if ($row !== false){
 
@@ -162,7 +163,7 @@ class UserController
 
     public function resetPassword(){
         if (isset($_GET['token'])){
-            $row = $this->model->retrieveAllWhere("tokens", "token", $_GET['token']);
+            $row = $this->getModel()->retrieveAllWhere("tokens", "token", $_GET['token']);
             if ($row === false){
                 header('Location: index.php?controller=UserController&method=login');
             }else {
@@ -185,7 +186,7 @@ class UserController
     public function submit_resetPassword(){
 
         if (isset($_POST['inputEmail'])) {
-            $row = $this->model->retrieveAllWhere("tokens", "email", $_POST['inputEmail']);
+            $row = $this->getModel()->retrieveAllWhere("tokens", "email", $_POST['inputEmail']);
             if ($row['email'] != $_POST['inputEmail']){
                 $msg = "That's not your mail";
                 header('Location: index.php?controller=UserController&method=resetPassword&error=' . $msg);
@@ -196,11 +197,11 @@ class UserController
                     header('Location: index.php?controller=UserController&method=resetPassword&error=' . $msg);
                 } else {
 
-                    $row = $this->model->retrieveAllWhere("tokens", "token", $_SESSION['token']);
+                    $row = $this->getModel()->retrieveAllWhere("tokens", "token", $_SESSION['token']);
 
-                    $this->model->changePassword($row[0]->email, $_POST['inputPassword']);
+                    $this->getModel()->changePassword($row[0]->email, $_POST['inputPassword']);
 
-                    $this->model->deleteToken($row[0]->email);
+                    $this->getModel()->deleteToken($row[0]->email);
                     unset($_SESSION['token']);
                     header('Location: index.php?controller=UserController&method=login');
                     exit();
@@ -221,7 +222,7 @@ class UserController
         $token = uniqid();
         $timestamp = time() + 86400;
 
-        $this->model->addToken($token, $_POST['inputEmail'] ,date('Y-m-d H:i:s',$timestamp));
+        $this->getModel()->addToken($token, $_POST['inputEmail'] ,date('Y-m-d H:i:s',$timestamp));
 
 
         $to_mail = $_POST['inputEmail'];
@@ -247,7 +248,7 @@ class UserController
 
         $user = new User($_POST['name'],$_POST['inputEmail'],$_POST['inputPassword'], $roles);
 
-        $this->model->add($user);
+        $this->getModel()->add($user);
         //return header("Location: index.php?controller=UserController&method=show");
 
     }
@@ -266,7 +267,7 @@ class UserController
         $user = new User($_POST['name'],$_POST['inputEmail'],$_POST['inputPassword'], $roles);
 
         if ($_POST['inputPassword'] == $_POST['confirmPassword']) {
-            $this->model->add($user);
+            $this->getModel()->add($user);
         }
         //return header("Location: index.php?controller=UserController&method=show");
 
@@ -287,13 +288,13 @@ class UserController
 //        $user = new User($_POST['name'],$_POST['email'],$_POST['password'], $roles);
         $user = new User($_POST['name'],$_POST['email'], '', $roles);
 
-        $this->model->edit($user,$_GET['edit']);
+        $this->getModel()->edit($user,$_GET['edit']);
         //return header("Location: index.php?controller=UserController&method=show");
     }
 
     public function delete()
     {
-        $this->model->delete($_GET['delete']);
+        $this->getModel()->delete($_GET['delete']);
         //return header("Location: index.php?controller=UserController&method=show");
     }
 
@@ -305,11 +306,11 @@ class UserController
             exit();
         }
 
-        $row = $this->model->retrieve($_SESSION['userId']);
+        $row = $this->getModel()->retrieve($_SESSION['userId']);
         $id = $row['id'];
-        $userRoles = $this->model->retrieveUserRoles($id);
-        $users = $this->model->retrieveAllUsers();
-        $roles = $this->model->retrieveAllUsersRoles($users);
+        $userRoles = $this->getModel()->retrieveUserRoles($id);
+        $users = $this->getModel()->retrieveAllUsers();
+        $roles = $this->getModel()->retrieveAllUsersRoles($users);
         $name= "";
         $email = "";
         require('view/home.php');
@@ -322,11 +323,11 @@ class UserController
             header('Location: index.php?controller=UserController&method=login');
             exit();
         }
-        $row = $this->model->retrieve($_SESSION['userId']);
+        $row = $this->getModel()->retrieve($_SESSION['userId']);
         $id = $row['id'];
-        $userRoles = $this->model->retrieveUserRoles($id);
-        $users = $this->model->retrieveAllUsers();
-        $roles = $this->model->retrieveAllUsersRoles($users);
+        $userRoles = $this->getModel()->retrieveUserRoles($id);
+        $users = $this->getModel()->retrieveAllUsers();
+        $roles = $this->getModel()->retrieveAllUsersRoles($users);
         $name ="";
         $email = "";
         require('view/dashboard.php');
@@ -343,12 +344,12 @@ class UserController
             header('Location: index.php?controller=UserController&method=show');
             exit();
         }
-        $row = $this->model->retrieve($_SESSION['userId']);
+        $row = $this->getModel()->retrieve($_SESSION['userId']);
         $id = $row['id'];
-        $userRoles = $this->model->retrieveUserRoles($id);
-        if($_POST['search']=="name") $users = $this->model->retrieveSearchedUsers("users",$_POST["search"],$_POST["value"]);
-        if($_POST['search']=="email") $users = $this->model->retrieveSearchedUsers("users",$_POST["search"],$_POST["value"]);
-        $roles = $this->model->retrieveAllUsersRoles($users);
+        $userRoles = $this->getModel()->retrieveUserRoles($id);
+        if($_POST['search']=="name") $users = $this->getModel()->retrieveSearchedUsers("users",$_POST["search"],$_POST["value"]);
+        if($_POST['search']=="email") $users = $this->getModel()->retrieveSearchedUsers("users",$_POST["search"],$_POST["value"]);
+        $roles = $this->getModel()->retrieveAllUsersRoles($users);
         $name = "";
         #email = "";
         require('./view/dashboard.php');
@@ -360,11 +361,11 @@ class UserController
             header('Location: index.php?controller=UserController&method=login');
             exit();
         }
-        $row = $this->model->retrieve($_SESSION['userId']);
+        $row = $this->getModel()->retrieve($_SESSION['userId']);
         $id = $row['id'];
-        $userRoles = $this->model->retrieveUserRoles($id);
-        $users = $this->model->retrieveRecent("users");
-        $roles = $this->model->retrieveAllUsersRoles($users);
+        $userRoles = $this->getModel()->retrieveUserRoles($id);
+        $users = $this->getModel()->retrieveRecent("users");
+        $roles = $this->getModel()->retrieveAllUsersRoles($users);
         $name = "";
         $email = "";
         require('./view/dashboard.php');
@@ -376,11 +377,11 @@ class UserController
             header('Location: index.php?controller=UserController&method=login');
             exit();
         }
-        $row = $this->model->retrieve($_SESSION['userId']);
+        $row = $this->getModel()->retrieve($_SESSION['userId']);
         $id = $row['id'];
-        $userRoles = $this->model->retrieveUserRoles($id);
-        $users = $this->model->retrieveOlder("users");
-        $roles = $this->model->retrieveAllUsersRoles($users);
+        $userRoles = $this->getModel()->retrieveUserRoles($id);
+        $users = $this->getModel()->retrieveOlder("users");
+        $roles = $this->getModel()->retrieveAllUsersRoles($users);
         $name = "";
         $email = "";
         require('./view/dashboard.php');
@@ -392,11 +393,11 @@ class UserController
             header('Location: index.php?controller=UserController&method=login');
             exit();
         }
-        $row = $this->model->retrieve($_SESSION['userId']);
+        $row = $this->getModel()->retrieve($_SESSION['userId']);
         $id = $row['id'];
-        $userRoles = $this->model->retrieveUserRoles($id);
-        $users = $this->model->retrieveOrderName("users","ASC");
-        $roles = $this->model->retrieveAllUsersRoles($users);
+        $userRoles = $this->getModel()->retrieveUserRoles($id);
+        $users = $this->getModel()->retrieveOrderName("users","ASC");
+        $roles = $this->getModel()->retrieveAllUsersRoles($users);
         $name = "";
         $email = "";
         require('./view/dashboard.php');
@@ -408,11 +409,11 @@ class UserController
             header('Location: index.php?controller=UserController&method=login');
             exit();
         }
-        $row = $this->model->retrieve($_SESSION['userId']);
+        $row = $this->getModel()->retrieve($_SESSION['userId']);
         $id = $row['id'];
-        $userRoles = $this->model->retrieveUserRoles($id);
-        $users = $this->model->retrieveOrderName("users","DESC");
-        $roles = $this->model->retrieveAllUsersRoles($users);
+        $userRoles = $this->getModel()->retrieveUserRoles($id);
+        $users = $this->getModel()->retrieveOrderName("users","DESC");
+        $roles = $this->getModel()->retrieveAllUsersRoles($users);
         $name = "";
         $email = "";
         require('./view/dashboard.php');
@@ -429,20 +430,20 @@ class UserController
             header('Location: index.php?controller=UserController&method=show');
             exit();
         }
-        $row = $this->model->retrieve($_SESSION['userId']);
+        $row = $this->getModel()->retrieve($_SESSION['userId']);
         $id = $row['id'];
-        $userRoles = $this->model->retrieveUserRoles($id);
+        $userRoles = $this->getModel()->retrieveUserRoles($id);
 
         if(isset($_POST['Recent']) || isset($_POST['Older']) || isset($_POST['A-Z']) || isset($_POST['Z-A']))
         {
-            $users = $this->model->filter("users",$_POST['name'],$_POST['email']);
+            $users = $this->getModel()->filter("users",$_POST['name'],$_POST['email']);
         }
         else
         {
-            $users = $this->model->filter("users",$_POST['name'],$_POST['email']);
+            $users = $this->getModel()->filter("users",$_POST['name'],$_POST['email']);
         }
 
-        $roles = $this->model->retrieveAllUsersRoles($users);
+        $roles = $this->getModel()->retrieveAllUsersRoles($users);
         $name ="";
         $email = "";
         require('./view/dashboard.php');
