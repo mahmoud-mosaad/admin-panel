@@ -58,7 +58,7 @@
                 <!--
                 <i class="fas fa-user-circle fa-fw"></i>
               -->
-                <img src="public/photos/0" style="height: 24px;  border-radius: 50%;margin-right: 100px">
+                <img src="../public/photos/0" style="height: 24px;  border-radius: 50%;margin-right: 100px">
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">Settings</a>
@@ -271,7 +271,7 @@
                         var id = href.substring(href.indexOf('delete=')+7, href.length);
                         $.ajax({
                             type: 'GET',
-                            url: 'index.php?controller=UserController&method=delete',
+                            url: '<?php echo BASEURL.'User/delete?';?>',
                             data: 'delete=' + id ,
                             success: function(){
                                 loadDoc();
@@ -307,7 +307,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: 'index.php?controller=UserController&method=add',
+                url: '<?php echo BASEURL.'User/add';?>',
                 data: 'name=' + $('#addname').val()
                     + '&inputEmail=' + $('#addemail').val()
                     + '&inputPassword=' + $('#addpassword').val()
