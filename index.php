@@ -1,6 +1,11 @@
 <?php
 session_start();
+/*
+require ('phpmailer/PHPMailerAutoload.php');
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+*/
 require './controller/UserController.php';
 require './controller/CategoryController.php';
 require './config.php';
