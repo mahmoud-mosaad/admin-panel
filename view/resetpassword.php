@@ -54,7 +54,7 @@
 			                }
 			            ?>       
 					    <div class="form-group">
-					        <button id="submitResetPassword" name="submitResetPassword" type="submit" class="btn btn-primary btn-block"> Send Email  </button>
+					        <button id="submitResetPassword" name="submitResetPassword" type="submit" class="btn btn-primary btn-block"> Reset Password </button>
 					    </div>       
 					    <p class="text-center">Have an account? <a href="index.php?controller=UserController&method=register">Register</a> </p>
 					    <p class="text-center">Already registered? <a href="index.php?controller=UserController&method=login">Login</a> </p>

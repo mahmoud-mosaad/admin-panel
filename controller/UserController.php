@@ -9,6 +9,21 @@ class UserController
         $this->model = new UserModel();
     }
 
+    /*
+    function sendMail(){
+        $mail = new PHPMailer;
+
+        //$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+        $mail->isSMTP();                                      // Set mailer to use SMTP
+        $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+        $mail->SMTPAuth = true;                               // Enable SMTP authentication
+        $mail->Username = 'my e-mail';                 // SMTP username
+        $mail->Password = 'my password';                           // SMTP password
+        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+        $mail->Port = 587;                                    // TCP port to connect to
+    }*/
+
     function setCookies($email){
         $exp = time() + (60*60*24*30*12); // 1 Hour
         setcookie("userId", $email, $exp);
@@ -48,12 +63,11 @@ class UserController
 
     public function check_register(){
 
-        if ($_POST['name'] == '' || $_POST['inputEmail'] == '' || $_POST['inputPassword'] ==''){
+        if (empty($_POST['name']) || empty($_POST['inputEmail']) || empty($_POST['inputPassword'])){
             return 'All data are required ... enter the empty data';
         }
-
         $row = $this->model->retrieve($_POST['inputEmail']);
-        if ($row === false){
+        if ($row == false){
 
             if ($_POST['inputPassword'] != $_POST['confirmPassword']){
                 return 'confirm password should equal your password';
@@ -83,7 +97,7 @@ class UserController
             if ($msg !== true){
                 header('Location: index.php?controller=UserController&method=register&error='.$msg);
             }else{
-                $this->add(0);
+                $this->save(0);
                 $_SESSION['userId'] = $_POST['inputEmail'];
                 $to_mail = $_POST['inputEmail'];
                 $subject = "Thanks";
@@ -146,17 +160,6 @@ class UserController
         }
     }
 
-    public function home(){
-
-        if(!isset($_SESSION['userId'])){
-            // not logged in
-            header('Location: index.php?controller=UserController&method=login');
-            exit();
-        }
-
-        $this->show();
-    }
-
     public function resetPassword(){
         if (isset($_GET['token'])){
             $row = $this->model->retrieveAllWhere("tokens", "token", $_GET['token']);
@@ -180,20 +183,32 @@ class UserController
     }
 
     public function submit_resetPassword(){
-        if (isset($_POST['inputPassword']) && isset($_POST['confirmPassword'])
-            && $_POST['inputPassword'] != $_POST['confirmPassword']){
-            $msg = 'confirm password should equal your password';
-            header('Location: index.php?controller=UserController&method=resetPassword&error='.$msg);
+
+        if (isset($_POST['inputEmail'])) {
+            $row = $this->model->retrieveAllWhere("tokens", "email", $_POST['inputEmail']);
+            if ($row['email'] != $_POST['inputEmail']){
+                $msg = "That's not your mail";
+                header('Location: index.php?controller=UserController&method=resetPassword&error=' . $msg);
+            }else{
+                if (isset($_POST['inputPassword']) && isset($_POST['confirmPassword'])
+                    && $_POST['inputPassword'] != $_POST['confirmPassword']) {
+                    $msg = 'confirm password should equal your password';
+                    header('Location: index.php?controller=UserController&method=resetPassword&error=' . $msg);
+                } else {
+
+                    $row = $this->model->retrieveAllWhere("tokens", "token", $_SESSION['token']);
+
+                    $this->model->changePassword($row[0]->email, $_POST['inputPassword']);
+
+                    $this->model->deleteToken($row[0]->email);
+                    unset($_SESSION['token']);
+                    header('Location: index.php?controller=UserController&method=login');
+                    exit();
+                }
+            }
         }else{
-
-            $row = $this->model->retrieveAllWhere("tokens", "token", $_SESSION['token']);
-
-            $this->model->changePassword($row[0]->email,$_POST['inputPassword']);
-
-            $this->model->deleteToken($row[0]->email);
-            unset($_SESSION['token']);
-            header('Location: index.php?controller=UserController&method=login');
-
+            $msg = "enter Your email";
+            header('Location: index.php?controller=UserController&method=resetPassword&error=' . $msg);
         }
     }
 
@@ -217,10 +232,9 @@ class UserController
         mail($to_mail, $subject, $msg, $headers);
 
         header('Location: index.php?controller=UserController&method=login');
-
     }
 
-    public function add($value)
+    public function save($value)
     {
         require 'entity/User.php';
 
@@ -235,7 +249,27 @@ class UserController
 
         $this->model->add($user);
         //return header("Location: index.php?controller=UserController&method=show");
-        return true;
+
+    }
+
+    public function add()//$value)
+    {
+        require 'entity/User.php';
+
+        $roles = array();
+
+        $roles['select'] = array(1 , $_POST['select'] == 'true' ? 1 : 0);
+        $roles['create'] = array(2 , $_POST['create'] == 'true' ? 1 : 0);
+        $roles['update'] = array(3 , $_POST['update'] == 'true' ? 1 : 0);
+        $roles['delete'] = array(4 , $_POST['delete'] == 'true' ? 1 : 0);
+
+        $user = new User($_POST['name'],$_POST['inputEmail'],$_POST['inputPassword'], $roles);
+
+        if ($_POST['inputPassword'] == $_POST['confirmPassword']) {
+            $this->model->add($user);
+        }
+        //return header("Location: index.php?controller=UserController&method=show");
+
     }
 
     public function edit()
@@ -243,25 +277,46 @@ class UserController
         require 'entity/User.php';
 
         $roles = array();
+                                    // isset before
+        $roles['select'] = array(1 , $_POST['select'] == 'true' ? 1 : 0);
+        $roles['create'] = array(2 , $_POST['create'] == 'true' ? 1 : 0);
+        $roles['update'] = array(3 , $_POST['update'] == 'true' ? 1 : 0);
+        $roles['delete'] = array(4 , $_POST['delete'] == 'true' ? 1 : 0);
 
-        $roles['select'] = array(1 , isset($_POST['select'])?1:0);
-        $roles['create'] = array(2 , isset($_POST['create'])?1:0);
-        $roles['update'] = array(3 , isset($_POST['update'])?1:0);
-        $roles['delete'] = array(4 , isset($_POST['delete'])?1:0);
 
-        $user = new User($_POST['name'],$_POST['email'],$_POST['password'], $roles);
+//        $user = new User($_POST['name'],$_POST['email'],$_POST['password'], $roles);
+        $user = new User($_POST['name'],$_POST['email'], '', $roles);
+
         $this->model->edit($user,$_GET['edit']);
-        return header("Location: index.php?controller=UserController&method=show");
+        //return header("Location: index.php?controller=UserController&method=show");
     }
 
     public function delete()
     {
         $this->model->delete($_GET['delete']);
-        return header("Location: index.php?controller=UserController&method=show");
+        //return header("Location: index.php?controller=UserController&method=show");
     }
 
-    public function show(){
+    public function home(){
 
+        if(!isset($_SESSION['userId'])){
+            // not logged in
+            header('Location: index.php?controller=UserController&method=login');
+            exit();
+        }
+
+        $row = $this->model->retrieve($_SESSION['userId']);
+        $id = $row['id'];
+        $userRoles = $this->model->retrieveUserRoles($id);
+        $users = $this->model->retrieveAllUsers();
+        $roles = $this->model->retrieveAllUsersRoles($users);
+        $name= "";
+        $email = "";
+        require('view/home.php');
+    }
+
+    public function show()
+    {
         if(!isset($_SESSION['userId'])){
             // not logged in
             header('Location: index.php?controller=UserController&method=login');
@@ -393,5 +448,8 @@ class UserController
         require('./view/dashboard.php');
     }
 
+    public function notfound(){
+        require 'view/404.php';
+    }
 
 }

@@ -30,7 +30,7 @@ create table user_roles(
 
 create table tokens(
     token  varchar(250) not null,
-	  email varchar(100) not null unique,
+	  email varchar(100) not null,
     expire timestamp not null
 );
 
