@@ -15,6 +15,22 @@ class Controller
         $this->model = $modl;
     }
 
+    public function add(){
+
+    }
+
+    public function edit(){
+
+    }
+
+    public function delete(){
+
+    }
+
+    public function retrieve(){
+
+    }
+
     /**
      * @return mixed
      */

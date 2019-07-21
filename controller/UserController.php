@@ -58,7 +58,7 @@ class UserController extends Controller
         session_destroy();
         setcookie("userId", NULL, time() - 600);
         setcookie("userP", NULL, time() - 600);
-        header("location: index.php?controller=UserController&method=login");
+        header("location:".BASEURL."User/login");
         exit();
     }
 
@@ -149,12 +149,12 @@ class UserController extends Controller
             $msg = $this->check_login();
 
             if ($msg !== true){
-                header('Location: index.php?controller=UserController&method=login&error='.$msg);
+                header('Location:'.BASEURL.'User/login?error='.$msg);
             }else{
                 if (isset($_POST['rememberme'])){
                     $this->setCookies($_POST['inputEmail']);
                 }
-                header("Location: index.php?controller=UserController&method=home");
+                header('Location:'.BASEURL.'User/home');
                 exit();
             }
 

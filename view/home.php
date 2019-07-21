@@ -15,13 +15,13 @@
     <title>SB Admin - Tables</title>
 
     <!-- Custom fonts for this template-->
-    <link href="public/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../public/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Page level plugin CSS-->
-    <link href="public/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="../public/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="public/css/sb-admin.css" rel="stylesheet">
+    <link href="../public/css/sb-admin.css" rel="stylesheet">
 
 </head>
 
@@ -234,28 +234,28 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="index.php?controller=UserController&method=logout">Logout</a>
+                <a class="btn btn-primary" href="<?php echo BASEURL.'User/logout'; ?>">Logout</a>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="public/vendor/jquery/jquery.min.js"></script>
-<script src="public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../public/vendor/jquery/jquery.min.js"></script>
+<script src="../public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="public/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="../public/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Page level plugin JavaScript-->
-<script src="public/vendor/datatables/jquery.dataTables.js"></script>
-<script src="public/vendor/datatables/dataTables.bootstrap4.js"></script>
+<script src="../public/vendor/datatables/jquery.dataTables.js"></script>
+<script src="../public/vendor/datatables/dataTables.bootstrap4.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="public/js/sb-admin.min.js"></script>
+<script src="../public/js/sb-admin.min.js"></script>
 
 <!-- Demo scripts for this page-->
-<script src="public/js/demo/datatables-demo.js"></script>
+<script src="../public/js/demo/datatables-demo.js"></script>
 
 <script>
 
@@ -282,7 +282,7 @@
                         var id = href.substring(href.indexOf('edit=')+5, href.length);
                         $.ajax({
                             type: 'POST',
-                            url: 'index.php?controller=UserController&method=edit&edit='+id,
+                            url: '<?php echo BASEURL.'User/edit?'?>edit='+id,
                             data: 'name=' + $('#n'+id).val()
                                 + '&email=' + $('#e'+id).val()
                                 + '&select=' + $('#s'+id).prop("checked")
@@ -297,7 +297,7 @@
                 });
             }
         };
-        xhttp.open("GET", "index.php?controller=UserController&method=show", true);
+        xhttp.open("GET", "<?php echo BASEURL.'User/show';?>", true);
         xhttp.send();
     }
 

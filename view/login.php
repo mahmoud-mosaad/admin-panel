@@ -17,7 +17,7 @@
 
 					<h4 class="text-center">Login</h4>
 					<p class="text-center">Get started with your free account</p>
-					<form action="index.php?controller=UserController&method=submit_login" method="post" id="loginForm">
+					<form action="<?php echo BASEURL.'User/submit_login'; ?>" method="post" id="loginForm">
 					    <div class="form-group input-group">
 					    	<div class="input-group-prepend">
 							    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
@@ -49,8 +49,8 @@
 					    <div class="form-group">
 					        <button id="submitLogin" name="submitLogin" type="submit" class="btn btn-primary btn-block"> Login  </button>
 					    </div>       
-					    <p class="text-center">Have an account? <a href="index.php?controller=UserController&method=register">Register</a> </p>
-					    <p class="text-center">Forget Password? <a href="index.php?controller=UserController&method=forgetPassword">Forget Password</a> </p>
+					    <p class="text-center">Have an account? <a href="<?php echo BASEURL.'User/register'; ?>">Register</a> </p>
+					    <p class="text-center">Forget Password? <a href="<?php echo BASEURL.'User/forgetPassword'; ?>">Forget Password</a> </p>
 					</form>
 					<br><br><br><br><br><br><br><br><br>
 				</div>
