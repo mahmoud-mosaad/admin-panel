@@ -26,7 +26,7 @@ if(isset($_GET['url'])){
     else
     {
         $url = array();
-        header('location:'.$baseUrl.'User/notfound');
+        header('location:'.BASEURL.'User/notfound');
         exit;
     }
 
