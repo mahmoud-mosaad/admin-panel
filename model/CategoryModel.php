@@ -3,31 +3,37 @@
 class CategoryModel
 {
 
-    public function add($name,$description)
+    public function add()
     {
         $insert = new QueryBuilder;
         $insert->insert("category",[
-            'name' => $name,
-            'description'=> $description
+            'id' => $_REQUEST['id'],
+            'name' => $_REQUEST['name'],
+            'description'=> $_REQUEST['description']
         ]);
-        header("Location: ../index.php");
     }
 
-    public function edit($id,$name,$description)
+    public function edit()
     {
         $edit = new QueryBuilder;
-        $edit->edit($id,"category",[
-            'name' => $name,
-            'description'=>$description
+        $edit->edit('id',$_REQUEST['id'],"category",[
+            'name' => $_REQUEST['name'],
+            'description'=>$_REQUEST['description']
         ]);
-        header("Location: ../index.php");
     }
 
-    public function delete($id)
+    public function delete()
     {
         $delete = new QueryBuilder;
-        //$delete->delete("category",$id);
-        header("Location: ../index.php");
+        $delete->delete('category', 'id', $_REQUEST['id']);
+    }
+
+    public function retrieve() : Category
+    {
+        $d = new QueryBuilder;
+        $row = $d->selectcat($_REQUEST['id']);
+        $cat = new Category($row['id'], $row['name'], $row['description']);
+        return $cat;
     }
 
 }

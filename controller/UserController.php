@@ -1,8 +1,6 @@
 <?php
 
-require "model/UserModel.php";
-require 'Controller.php';
-class UserController extends Controller
+class UserController// extends Controller
 {
 
     public function __construct()
@@ -363,7 +361,7 @@ class UserController extends Controller
         //return header("Location: index.php?controller=UserController&method=show");
     }
 
-    public function delete()
+    public function delete($a, $b)
     {
         $this->getModel()->delete($_GET['delete']);
         //return header("Location: index.php?controller=UserController&method=show");

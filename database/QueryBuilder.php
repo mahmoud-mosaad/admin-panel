@@ -1,6 +1,6 @@
 <?php
 
-require './database/connection.php';
+require 'database/connection.php';
 class QueryBuilder extends connection
 {
 
@@ -81,6 +81,39 @@ class QueryBuilder extends connection
         }
         return $query->fetch(PDO::FETCH_ASSOC);
     }
+    public function selectcat($id)
+    {
+        $query = $this->pdo->prepare("select * from category where id=:id");
+        $query->bindValue(':id', $id);
+        $query->execute();
+        if ($query->rowCount() <= 0 ){
+            return false;
+        }
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function selectcon($id)
+    {
+        $query = $this->pdo->prepare("select * from contact where id=:id");
+        $query->bindValue(':id', $id);
+        $query->execute();
+        if ($query->rowCount() <= 0 ){
+            return false;
+        }
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function selectabo($id)
+    {
+        $query = $this->pdo->prepare("select * from about where id=:id");
+        $query->bindValue(':id', $id);
+        $query->execute();
+        if ($query->rowCount() <= 0 ){
+            return false;
+        }
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
 
     public function selectemail($id)
     {
