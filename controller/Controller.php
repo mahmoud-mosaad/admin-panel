@@ -4,9 +4,9 @@ class Controller
 {
 
     private $model;
-    public function __construct($modl)
+    public function __construct($model)
     {
-        $this->model = $modl;
+        $this->model = $model;
     }
 
     public function add(){
@@ -25,7 +25,7 @@ class Controller
         $this->getModel()->edit();
     }
 
-    public function delete(){
+    public function delete($a,$b){
         require 'view/'.$GLOBALS['controller'].'/delete.php';
     }
 

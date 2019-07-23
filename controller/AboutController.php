@@ -8,6 +8,10 @@ class AboutController extends Controller
         parent::__construct(new AboutModel());
     }
 
+    public  function add()
+    {
+        AboutModel::add();
+    }
 
 
 }

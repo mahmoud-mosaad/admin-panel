@@ -1,12 +1,17 @@
 <?php
 
-class AboutModel
+class AboutModel extends Model
 {
+    public function __constructor()
+    {
+        $this->table = "about";
+       // $this->
+    }
 
     public function add()
     {
         $insert = new QueryBuilder;
-        $insert->insert("about",[
+        $insert->insert($this->table,[
             'id' => $_REQUEST['id'],
             'description' => $_REQUEST['description']
         ]);

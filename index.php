@@ -1,4 +1,11 @@
 <?php
+
+// $array = [
+//     "id" => "5",
+//     "name" => "Hady"
+// ];
+// echo $array['id'];
+// die();
 session_start();
 /*
 require ('phpmailer/PHPMailerAutoload.php');
@@ -13,10 +20,12 @@ require_once 'entity/About.php';
 
 require_once 'database/QueryBuilder.php';
 
+require_once 'model/Model.php';
 require_once 'model/ContactModel.php';
 require_once 'model/AboutModel.php';
 require_once "model/UserModel.php";
 require_once 'model/CategoryModel.php';
+
 
 require_once 'controller/Controller.php';
 require_once 'controller/UserController.php';
