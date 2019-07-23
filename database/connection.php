@@ -1,5 +1,6 @@
 <?php
-
+namespace database;
+use \PDO;
 class connection
 {
     public $pdo;

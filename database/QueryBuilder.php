@@ -1,6 +1,9 @@
 <?php
 
-require 'database/connection.php';
+//require 'database/connection.php';
+namespace database;
+use database\connection;
+use \PDO;
 class QueryBuilder extends connection
 {
 

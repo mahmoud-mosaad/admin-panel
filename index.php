@@ -14,7 +14,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 */
 
-require_once 'entity/Contact.php';
+/*require_once 'entity/Contact.php';
 require_once 'entity/Category.php';
 require_once 'entity/About.php';
 
@@ -31,10 +31,13 @@ require_once 'controller/Controller.php';
 require_once 'controller/UserController.php';
 require_once 'controller/CategoryController.php';
 require_once 'controller/ContactController.php';
-require_once 'controller/AboutController.php';
+require_once 'controller/AboutController.php';*/
+require_once 'vendor/autoload.php';
 
 require_once 'config.php';
 
+//new app\Controller\UserController();
+use app\Controller\UserController;
 
 if (!isset($_GET['url'])){
     $url = array();
@@ -54,19 +57,18 @@ else {
 
     if (isset($_GET['url'])) {
 
-        if (isset($method)
-            && method_exists($controller . "Controller", $method)
+        if ( method_exists("app\Controller\\".$controller . "Controller", $method)
         //    && is_callable($controller . "Controller", $method)
         ) {
 
-            $cont = $controller . "Controller";
+            $cont = "app\Controller\\".$controller . "Controller";
 
             $cont = new $cont();
 
             call_user_func(array($cont, $method), $param);
         } else {
-            $url = array();
-            header('location:' . BASEURL . 'User/notfound');
+            $url = array();echo "$method";
+            //header('location:' . BASEURL . 'User/notfound');
             exit;
         }
 

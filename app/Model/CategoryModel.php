@@ -1,5 +1,7 @@
 <?php
-
+namespace app\Model;
+use database\QueryBuilder;
+use entity\Category;
 class CategoryModel
 {
 

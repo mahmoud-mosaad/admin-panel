@@ -1,8 +1,10 @@
 <?php
+namespace app\Controller;
 
+use  app\Model\UserModel;
+use entity\User;
 class UserController  extends Controller
 {
-
     public function __construct()
     {
         parent::__construct(new UserModel());
@@ -157,7 +159,8 @@ class UserController  extends Controller
 
         $this->checkCookies();
 
-        require 'view/register.php';
+        //require 'view/register.php';
+        $this->view('register');
     }
 
     public function submit_register(){
@@ -209,7 +212,7 @@ class UserController  extends Controller
 
         $this->checkCookies();
 
-        require 'view/login.php';
+        $this->view('login');
     }
 
     public function submit_login(){
@@ -239,7 +242,8 @@ class UserController  extends Controller
                 $time = time();
                 if (strtotime($row[0]->expire) > $time) {
                     $_SESSION['token'] = $_GET['token'];
-                    require 'view/resetpassword.php';
+                    //require 'view/resetpassword.php';
+                    $this->view('resetpassword');
                 }
                 else{
                     header('Location:'.BASEURL.'User/login');
@@ -283,7 +287,8 @@ class UserController  extends Controller
     }
 
     public function forgetPassword(){
-        require 'view/forgetpassword.php';
+        //require 'view/forgetpassword.php';
+        $this->view('forgetpassword');
     }
 
     public function submit_forgetPassword(){
@@ -306,7 +311,9 @@ class UserController  extends Controller
 
     public function save($value)
     {
-        require 'entity/User.php';
+        //require 'entity/User.php';
+        
+
 
         $roles = array();
 
@@ -324,7 +331,8 @@ class UserController  extends Controller
 
     public function add()//$value)
     {
-        require 'entity/User.php';
+        //require 'entity/User.php';
+        
 
         $roles = array();
 
@@ -344,7 +352,8 @@ class UserController  extends Controller
 
     public function edit()
     {
-        require 'entity/User.php';
+        //require 'entity/User.php';
+        
 
         $roles = array();
                                     // isset before
@@ -382,7 +391,8 @@ class UserController  extends Controller
         $roles = $this->getModel()->retrieveAllUsersRoles($users);
         $name= "";
         $email = "";
-        require('view/home.php');
+    require('view/home.php');
+        //$this->view('home');
     }
 
     public function show()
@@ -400,6 +410,7 @@ class UserController  extends Controller
         $name ="";
         $email = "";
         require('view/dashboard.php');
+        //$this->view('dashboard');
     }
 
     public function search()
@@ -422,6 +433,7 @@ class UserController  extends Controller
         $name = "";
         #email = "";
         require('./view/dashboard.php');
+        //$this->view('dashboard');
     }
     public function recentAdded()
     {
@@ -438,6 +450,7 @@ class UserController  extends Controller
         $name = "";
         $email = "";
         require('./view/dashboard.php');
+        //$this->view('dashboard');
     }
 
     public function OlderAdded()
@@ -455,6 +468,7 @@ class UserController  extends Controller
         $name = "";
         $email = "";
         require('./view/dashboard.php');
+        //$this->view('dashboard');
     }
 
     public function OrderNameA()
@@ -472,6 +486,7 @@ class UserController  extends Controller
         $name = "";
         $email = "";
         require('./view/dashboard.php');
+        //$this->view('dashboard');
     }
 
     public function OrderNamez()
@@ -489,6 +504,7 @@ class UserController  extends Controller
         $name = "";
         $email = "";
         require('./view/dashboard.php');
+        //$this->view('dashboard');
     }
 
     public function filter()
@@ -519,10 +535,12 @@ class UserController  extends Controller
         $name ="";
         $email = "";
         require('./view/dashboard.php');
+        //$this->view('dashboard');
     }
 
     public function notfound(){
         require 'view/404.php';
+        //$this->view('404');
     }
 
 

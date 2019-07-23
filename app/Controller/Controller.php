@@ -1,5 +1,5 @@
 <?php
-
+namespace app\Controller;
 class Controller
 {
 
@@ -72,6 +72,9 @@ class Controller
         $this->model = $model;
     }
 
-
+    public function view($view,$data=[])
+    {
+        require_once "view/{$view}.php";
+    }
 
 }

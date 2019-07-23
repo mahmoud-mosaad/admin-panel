@@ -1,5 +1,6 @@
 <?php
-
+namespace app\Controller;
+use app\Model\AboutModel;
 class AboutController extends Controller
 {
 
