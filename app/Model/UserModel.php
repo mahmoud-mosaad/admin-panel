@@ -1,8 +1,8 @@
 <?php
 namespace app\Model;
-use database\QueryBuilder;
-use entity\User;
-class UserModel extends Model
+use app\database\QueryBuilder;
+use app\entity\User;
+class UserModel
 {
 
     public function changePassword($email, $password){
@@ -69,15 +69,14 @@ class UserModel extends Model
                 'auth' => $item[1]
             ]);
         }
-
-
     }
 
     public function delete($id)
     {
-        $delete = new QueryBuilder;
-        $delete->delete("users",'id',$id);
+        $delete = new QueryBuilder;echo "$id";
         $delete->delete("user_roles",'user_id',$id);
+        $delete->delete("users",'id',$id);
+        
 
     }
 

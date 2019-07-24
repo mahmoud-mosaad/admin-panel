@@ -1,18 +1,45 @@
 <?php
 namespace app\Controller;
 use app\Model\AboutModel;
-class AboutController extends Controller
+
+class AboutController
 {
 
-    public function __construct()
+    public function index()
     {
-        parent::__construct(new AboutModel());
+        $about = new AboutModel("about",[]);
+        $abouts = $about->all();
+        require_once "view/aboutview.php";
     }
 
-    public  function add()
+    public function create()
     {
-        AboutModel::add();
+        $about = new AboutModel("about",[
+            "description" => $_POST['description']
+        ]);
+        $about ->create();
+        $abouts = $about->all();
+        header("location:".BASEURL."About/index");
     }
 
+    public function edit($id)
+    {
+        $about = new AboutModel("about",[
+            "id" => $id,
+            "description" => $_POST["description"]
+        ]);
+        $about->edit();
+        $abouts = $about->all();
+        header("location:".BASEURL."About/index");
+    }
 
+    public function delete($id)
+    {
+        $about = new AboutModel("about",[
+            "id" => $id
+        ]);
+        $about->delete();
+        $abouts = $about->all();
+        header("location:".BASEURL."About/index");
+    }
 }

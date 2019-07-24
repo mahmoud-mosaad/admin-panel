@@ -370,9 +370,11 @@ class UserController  extends Controller
         //return header("Location: index.php?controller=UserController&method=show");
     }
 
-    public function delete($a, $b)
+    public function delete()
     {
         $this->getModel()->delete($_GET['delete']);
+
+        //$this->getModel()->delete(7);
         //return header("Location: index.php?controller=UserController&method=show");
     }
 

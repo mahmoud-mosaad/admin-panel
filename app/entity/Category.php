@@ -1,5 +1,5 @@
 <?php
-namespace entity;
+namespace app\entity;
 class Category
 {
 

@@ -25,7 +25,7 @@ class Controller
         $this->getModel()->edit();
     }
 
-    public function delete($a,$b){
+    public function delete(){
         require 'view/'.$GLOBALS['controller'].'/delete.php';
     }
 

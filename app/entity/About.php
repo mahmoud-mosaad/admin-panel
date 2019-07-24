@@ -5,7 +5,7 @@
  * Date: 7/22/2019
  * Time: 4:00 PM
  */
-namespace entity;
+namespace app\entity;
 class About
 {
 

@@ -23,7 +23,7 @@ require_once 'database/QueryBuilder.php';
 require_once 'model/Model.php';
 require_once 'model/ContactModel.php';
 require_once 'model/AboutModel.php';
-require_once "model/UserModel.php";
+//require_once "model/UserModel.php";
 require_once 'model/CategoryModel.php';
 
 
@@ -57,7 +57,7 @@ else {
 
     if (isset($_GET['url'])) {
 
-        if ( method_exists("app\Controller\\".$controller . "Controller", $method)
+        if (isset($method)&& method_exists("app\Controller\\".$controller . "Controller", $method)
         //    && is_callable($controller . "Controller", $method)
         ) {
 

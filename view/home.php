@@ -111,7 +111,6 @@
     <div id="content-wrapper">
 
         <div class="container-fluid">
-
             <?php
 
             if (!empty($userRoles) && $userRoles[0]->auth == 0
@@ -164,6 +163,7 @@
                         </form>
                     </div>
                 </div>
+
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered"  width="100%" cellspacing="0">
@@ -272,7 +272,7 @@
                         var id = href.substring(href.indexOf('delete=')+7, href.length);
                         $.ajax({
                             type: 'GET',
-                            url: '<?php echo BASEURL.'User/delete?';?>',
+                            url: 'http://localhost/hady/admin-panel/User/delete?',
                             data: 'delete=' + id ,
                             success: function(){
                                 loadDoc();
@@ -291,7 +291,6 @@
                         if (response != '1'){
                             $('#er' + id).html(response);
                         }else{
-
                             $.ajax({
                                 type: 'POST',
                                 url: '<?php echo BASEURL.'User/edit?'?>edit='+id,
@@ -380,5 +379,6 @@
     });
 
 </script>
+
 </body>
 </html>

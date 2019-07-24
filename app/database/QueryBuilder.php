@@ -1,8 +1,8 @@
 <?php
 
 //require 'database/connection.php';
-namespace database;
-use database\connection;
+namespace app\database;
+use app\database\connection;
 use \PDO;
 class QueryBuilder extends connection
 {
@@ -187,6 +187,7 @@ class QueryBuilder extends connection
 
     public function delete($table , $column , $id)
     {
+
         $query = $this->pdo->prepare("DELETE FROM $table WHERE $column=:$column");
         $query->bindParam(':'.$column,$id);
         $query->execute();
