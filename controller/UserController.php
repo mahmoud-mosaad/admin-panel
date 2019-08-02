@@ -1,27 +1,14 @@
 <?php
 
-class UserController// extends Controller
+require 'config/mail.php';
+
+class UserController extends Controller
 {
 
     public function __construct()
     {
         parent::__construct(new UserModel());
     }
-
-    /*
-    function sendMail(){
-        $mail = new PHPMailer;
-
-        //$mail->SMTPDebug = 3;                               // Enable verbose debug output
-
-        $mail->isSMTP();                                      // Set mailer to use SMTP
-        $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true;                               // Enable SMTP authentication
-        $mail->Username = 'my e-mail';                 // SMTP username
-        $mail->Password = 'my password';                           // SMTP password
-        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-        $mail->Port = 587;                                    // TCP port to connect to
-    }*/
 
     function setCookies($email){
         $exp = time() + (60*60*24*30*12); // 1 Hour
@@ -150,7 +137,6 @@ class UserController// extends Controller
         return false;
     }
 
-
     public function register(){
 
         $this->checkSession();
@@ -168,16 +154,49 @@ class UserController// extends Controller
                 header('Location:'.BASEURL.'User/register?error='.$msg);
             }else{
                 $this->save(0);
-                $_SESSION['userId'] = $_POST['inputEmail'];
-                $to_mail = $_POST['inputEmail'];
-                $subject = "Thanks";
-                $msg = "Dear " . $_POST['name'] . " ... Thanks for registration in admin-panel";
-                mail($to_mail, $subject, $msg);
+
+                $token = uniqid();
+                $timestamp = time() + 86400 * 365 * 100; // 100 year
+
+                $this->getModel()->addToken($token, $_POST['inputEmail'] ,date('Y-m-d H:i:s',$timestamp));
+
+                $mail = new mail();
+                $mail->setFrom(MAIL_USERNAME, MAIL_NAME);
+                $mail->addAddress($_POST['inputEmail'], $_POST['name']);
+                $mail->setHTMLContent('Thanks',
+                    str_replace(
+                        array('[:name:]', '[:verify:]'),
+                        array($_POST['name'], BASEURL.'User/activate?token='.$token),
+                        file_get_contents('view/Mail/registration.html')
+                    )
+                );
+                $mail->sendMail();
 
                 header('Location:'.BASEURL.'User/home');
                 //password_hash($password, PASSWORD_DEFAULT)
 
             }
+        }
+    }
+
+    public function activate(){
+        if (isset($_GET['token'])){
+            $row = $this->getModel()->retrieveAllWhere("tokens", "token", $_GET['token']);
+            if ($row === false){
+                header('Location:'.BASEURL.'User/login');
+            }else {
+
+                $this->getModel()->active($row[0]->email);
+                $this->getModel()->deleteToken($row[0]->email);
+
+                $_SESSION['userId'] = $row[0]->email;
+
+                header('Location:'.BASEURL.'User/home');
+
+            }
+        }
+        else{
+            header('Location:'.BASEURL.'User/login?error=failed to activate email');
         }
     }
 
@@ -187,6 +206,10 @@ class UserController// extends Controller
         }
 
         $row = $this->getModel()->retrieveuser($_POST['inputEmail']);
+
+        if ($row['active'] == -1){
+            return 'you need to activate your account from your mail';
+        }
 
         if ($row !== false){
 
@@ -232,6 +255,7 @@ class UserController// extends Controller
 
     public function resetPassword(){
         if (isset($_GET['token'])){
+
             $row = $this->getModel()->retrieveAllWhere("tokens", "token", $_GET['token']);
             if ($row === false){
                 header('Location:'.BASEURL.'User/login');
@@ -254,22 +278,21 @@ class UserController// extends Controller
 
     public function submit_resetPassword(){
 
-        if (isset($_POST['inputEmail'])) {
-            $row = $this->getModel()->retrieveAllWhere("tokens", "email", $_POST['inputEmail']);
-            if ($row['email'] != $_POST['inputEmail']){
+        if (isset($_POST['inputEmail'])
+            && isset($_POST['inputPassword'])
+            && isset($_POST['confirmPassword'])) {
+
+            $row = $this->getModel()->retrieveAllWhere("tokens", "token", $_SESSION['token']);
+
+            if ($row[0]->email != $_POST['inputEmail']){
                 $msg = "That's not your mail";
-                header('Location:'.BASEURL.'User/resetPassword?error=' . $msg);
+                header('Location:'.BASEURL.'User/resetPassword?token='.$_SESSION['token'].'&error=' . $msg);
             }else{
-                if (isset($_POST['inputPassword']) && isset($_POST['confirmPassword'])
-                    && $_POST['inputPassword'] != $_POST['confirmPassword']) {
+                if ($_POST['inputPassword'] != $_POST['confirmPassword']) {
                     $msg = 'confirm password should equal your password';
-                    header('Location:'.BASEURL.'User/resetPassword?error=' . $msg);
+                    header('Location:'.BASEURL.'User/resetPassword?token='. $_SESSION['token'].'&error=' . $msg);
                 } else {
-
-                    $row = $this->getModel()->retrieveAllWhere("tokens", "token", $_SESSION['token']);
-
                     $this->getModel()->changePassword($row[0]->email, password_hash($_POST['inputPassword'], PASSWORD_DEFAULT));
-
                     $this->getModel()->deleteToken($row[0]->email);
                     unset($_SESSION['token']);
                     header('Location:'.BASEURL.'User/login');
@@ -277,8 +300,8 @@ class UserController// extends Controller
                 }
             }
         }else{
-            $msg = "enter Your email";
-            header('Location:'.BASEURL.'User/resetPassword?error='.$msg);
+            $msg = "enter Your email and new password then confirm password";
+            header('Location:'.BASEURL.'User/resetPassword?token='.$_SESSION['token'].'&error='.$msg);
         }
     }
 
@@ -289,17 +312,22 @@ class UserController// extends Controller
     public function submit_forgetPassword(){
 
         $token = uniqid();
-        $timestamp = time() + 86400;
+        $timestamp = time() + 86400; // one day
 
         $this->getModel()->addToken($token, $_POST['inputEmail'] ,date('Y-m-d H:i:s',$timestamp));
 
 
-        $to_mail = $_POST['inputEmail'];
-        $subject = "admin-panel";
-        $msg = " <a class=\"d-block small\" href=\"" .BASEURL.'User/resetPassword?token='.$token."\">reset Password</a>";
-        $headers = "Content-Type: text/html; charset=UTF-8\r\n";
-
-        mail($to_mail, $subject, $msg, $headers);
+        $mail = new mail();
+        $mail->setFrom(MAIL_USERNAME, MAIL_NAME);
+        $mail->addAddress($_POST['inputEmail'], $_POST['name']);
+        $mail->setHTMLContent('Reset Password',
+            str_replace(
+                array('[:name:]', '[:reset:]'),
+                array(explode("@", $_POST['inputEmail'])[0], BASEURL.'User/resetPassword?token='.$token),
+                file_get_contents('view/Mail/resetpassword.html')
+            )
+        );
+        $mail->sendMail();
 
         header('Location:'.BASEURL.'User/login');
     }
@@ -322,7 +350,7 @@ class UserController// extends Controller
 
     }
 
-    public function add()//$value)
+    public function add()
     {
         require 'entity/User.php';
 
@@ -361,7 +389,7 @@ class UserController// extends Controller
         //return header("Location: index.php?controller=UserController&method=show");
     }
 
-    public function delete($a, $b)
+    public function delete()
     {
         $this->getModel()->delete($_GET['delete']);
         //return header("Location: index.php?controller=UserController&method=show");
@@ -423,6 +451,7 @@ class UserController// extends Controller
         #email = "";
         require('./view/dashboard.php');
     }
+
     public function recentAdded()
     {
         if(!isset($_SESSION['userId'])){
@@ -524,6 +553,5 @@ class UserController// extends Controller
     public function notfound(){
         require 'view/404.php';
     }
-
 
 }

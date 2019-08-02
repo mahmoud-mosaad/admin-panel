@@ -39,7 +39,7 @@ class UserModel
         $insert->insert("users",[
             'name' => $user->getName(),
             'email' => $user->getEmail(),
-            'password'=>$user->getPassword()
+            'password' => $user->getPassword()
         ]);
 
         $id = $this->retrieve($user->getEmail())['id'];
@@ -51,6 +51,14 @@ class UserModel
                 'auth' => $item[1]
             ]);
         }
+    }
+
+    public function active($email)
+    {
+        $edit = new QueryBuilder;
+        $edit->edit("email",$email,"users",[
+            'active' => 0
+        ]);
     }
 
     public function edit(User $user, $id)
@@ -67,7 +75,6 @@ class UserModel
                 'auth' => $item[1]
             ]);
         }
-
 
     }
 

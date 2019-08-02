@@ -291,7 +291,6 @@
                         if (response != '1'){
                             $('#er' + id).html(response);
                         }else{
-
                             $.ajax({
                                 type: 'POST',
                                 url: '<?php echo BASEURL.'User/edit?'?>edit='+id,
@@ -306,7 +305,6 @@
                                 }
                             });
                             $('#er' + id).html('success');
-
                         }
                         event.preventDefault();
                     }
@@ -373,9 +371,7 @@
                         loadDoc();
                     }
                  });
-
             }
-
         });
     });
 

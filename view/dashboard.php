@@ -17,7 +17,7 @@
         <?php if(!empty($userRoles) &&$userRoles[2]->auth == 1) : ?>
             <td>
                 <button class='btn btn-primary' name="edit">
-                    <a class='simple_button' href="edit=<?php echo $user->id; ?>">
+                    <a class='simple_button' href="edit?edit=<?php echo $user->id; ?>">
                         Edit
                     </a>
                 </button>
@@ -26,7 +26,7 @@
         <?php if(!empty($userRoles) &&$userRoles[3]->auth == 1) : ?>
             <td>
                 <button class='btn btn-danger'>
-                    <a class='simple_button' href="delete=<?php echo $user->id; ?>">
+                    <a class='simple_button' href="delete?delete=<?php echo $user->id; ?>">
                         Delete
                     </a>
                 </button>

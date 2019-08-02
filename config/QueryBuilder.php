@@ -1,6 +1,6 @@
 <?php
 
-require 'database/connection.php';
+require 'config/connection.php';
 class QueryBuilder extends connection
 {
 
