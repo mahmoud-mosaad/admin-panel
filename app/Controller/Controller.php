@@ -1,12 +1,12 @@
 <?php
-
+namespace app\Controller;
 class Controller
 {
 
     private $model;
-    public function __construct($modl)
+    public function __construct($model)
     {
-        $this->model = $modl;
+        $this->model = $model;
     }
 
     public function add(){
@@ -72,6 +72,9 @@ class Controller
         $this->model = $model;
     }
 
-
+    public function view($view,$data=[])
+    {
+        require_once "view/{$view}.php";
+    }
 
 }

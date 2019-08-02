@@ -1,5 +1,7 @@
 <?php
-
+namespace app\Model;
+use app\database\QueryBuilder;
+use app\entity\User;
 class UserModel
 {
 
@@ -75,14 +77,14 @@ class UserModel
                 'auth' => $item[1]
             ]);
         }
-
     }
 
     public function delete($id)
     {
-        $delete = new QueryBuilder;
-        $delete->delete("users",'id',$id);
+        $delete = new QueryBuilder;echo "$id";
         $delete->delete("user_roles",'user_id',$id);
+        $delete->delete("users",'id',$id);
+        
 
     }
 

@@ -1,5 +1,7 @@
 <?php
-
+namespace app\Model;
+use database\QueryBuilder;
+use entity\Contact;
 class ContactModel
 {
 
