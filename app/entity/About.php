@@ -1,11 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mahmo
- * Date: 7/22/2019
- * Time: 4:00 PM
- */
-namespace app\entity;
+
+//namespace app\entity;
+
+
 class About
 {
 

@@ -1,7 +1,16 @@
 <?php
+
+/*
 namespace app\Model;
-use database\QueryBuilder;
-use entity\About;
+
+use app\database\QueryBuilder;
+use app\entity\About;
+
+require_once 'app/Model/Model.php';
+*/
+
+require_once 'Model.php';
+
 class AboutModel extends Model
 {
 

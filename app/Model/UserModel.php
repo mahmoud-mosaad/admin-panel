@@ -1,7 +1,9 @@
 <?php
+/*
 namespace app\Model;
 use app\database\QueryBuilder;
 use app\entity\User;
+*/
 class UserModel
 {
 

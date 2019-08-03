@@ -272,7 +272,7 @@
                         var id = href.substring(href.indexOf('delete=')+7, href.length);
                         $.ajax({
                             type: 'GET',
-                            url: 'http://localhost/hady/admin-panel/User/delete?',
+                            url: <?php echo "'".BASEURL."User/delete'"; ?>,
                             data: 'delete=' + id ,
                             success: function(){
                                 loadDoc();
@@ -288,12 +288,17 @@
                                 + '&email=' + $('#e'+id).val()
                                 + '&id=' + id
                         }).responseText;
+
                         if (response != '1'){
                             $('#er' + id).html(response);
                         }else{
+
+                            var link = <?php echo "'".BASEURL."User/edit'"; ?> ;
+                            link = link + '?edit=' + id;
+
                             $.ajax({
                                 type: 'POST',
-                                url: '<?php echo BASEURL.'User/edit?'?>edit='+id,
+                                url:  link,
                                 data: 'name=' + $('#n'+id).val()
                                 + '&email=' + $('#e'+id).val()
                                 + '&select=' + $('#s'+id).prop("checked")
@@ -311,7 +316,7 @@
                 });
             }
         };
-        xhttp.open("GET", "<?php echo BASEURL.'User/show';?>", true);
+        xhttp.open("GET", "<?php echo BASEURL.'User/show'; ?>", true);
         xhttp.send();
     }
 

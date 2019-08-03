@@ -13,7 +13,10 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 */
 
-use app\Controller\UserController;
+//use app\Controller\UserController;
+
+
+
 
 if (!isset($_GET['url'])){
     $url = array();
@@ -33,17 +36,26 @@ else {
 
     if (isset($_GET['url'])) {
 
-        if (isset($method)&& method_exists("app\Controller\\".$controller . "Controller", $method)
+        /*if (isset($method)&& method_exists("app\Controller\\".$controller . "Controller", $method)
         //    && is_callable($controller . "Controller", $method)
-        ) {
+        )*/
 
-            $cont = "app\Controller\\".$controller . "Controller";
+        if (isset($method)
+            && method_exists($controller . "Controller", $method)
+        ){
+
+
+            $cont = $controller . "Controller";
+            //$cont = "app\Controller\\".$controller . "Controller";
 
             $cont = new $cont();
 
             call_user_func(array($cont, $method), $param);
-        } else {
-            $url = array();echo "$method";
+        }
+        else {
+            $url = array();
+            header('location:' . BASEURL . 'User/notfound');
+            //$url = array();echo "$method";
             //header('location:' . BASEURL . 'User/notfound');
             exit;
         }

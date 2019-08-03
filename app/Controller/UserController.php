@@ -1,13 +1,16 @@
 <?php
+
+/*
 namespace app\Controller;
 
-require 'config/mail.php';
+require 'config/config.php';
 
-use app\Model\UserModel;
+//use app\Model\UserModel;
 
-use entity\User;
+use app\entity\User;
+*/
 
-class UserController  extends Controller
+class UserController extends Controller
 {
     public function __construct()
     {
@@ -161,7 +164,7 @@ class UserController  extends Controller
                 $this->save(0);
 
                 $token = uniqid();
-                $timestamp = time() + 86400 * 365 * 100; // 100 year
+                $timestamp = (int)(time() + 3153600000); // 100 year
 
                 $this->getModel()->addToken($token, $_POST['inputEmail'] ,date('Y-m-d H:i:s',$timestamp));
 
@@ -213,7 +216,7 @@ class UserController  extends Controller
         $row = $this->getModel()->retrieveuser($_POST['inputEmail']);
 
         if ($row['active'] == -1){
-            return 'you need to activate your account from your mail';
+            return 'you need to activate your account from your config';
         }
 
         if ($row !== false){
@@ -291,7 +294,7 @@ class UserController  extends Controller
             $row = $this->getModel()->retrieveAllWhere("tokens", "token", $_SESSION['token']);
 
             if ($row[0]->email != $_POST['inputEmail']){
-                $msg = "That's not your mail";
+                $msg = "That's not your config";
                 header('Location:'.BASEURL.'User/resetPassword?token='.$_SESSION['token'].'&error=' . $msg);
             }else{
                 if ($_POST['inputPassword'] != $_POST['confirmPassword']) {
@@ -383,7 +386,6 @@ class UserController  extends Controller
     public function edit()
     {
         //require 'entity/User.php';
-        
 
         $roles = array();
                                     // isset before

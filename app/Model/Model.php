@@ -1,8 +1,10 @@
 <?php
-namespace app\Model;
+
+/*
+namespace app\Model\Model;
+
 use app\database\QueryBuilder;
-use app\entity\About;
-use app\entity\User;
+*/
 class Model
 {
     public function all()
@@ -18,8 +20,6 @@ class Model
         $insert->insert($this->table,[$key => $value]);
 
     }
-
-    
 
     public function edit()
     {

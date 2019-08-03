@@ -1,7 +1,10 @@
 <?php
+/*
 namespace app\Model;
-use database\QueryBuilder;
-use entity\Contact;
+
+use app\database\QueryBuilder;
+use app\entity\Contact;
+*/
 class ContactModel
 {
 

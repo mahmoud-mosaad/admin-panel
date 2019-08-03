@@ -22,7 +22,7 @@ class mail
     function __construct(){
         $this->mail = new PHPMailer(true);
         //Server settings ... Load from config.php file
-        //$this->mail->SMTPDebug = 2;       // Enable verbose debug output
+        //$this->config->SMTPDebug = 2;       // Enable verbose debug output
         $this->mail->isSMTP();        // Set mailer to use SMTP
         $this->mail->Host       = SMTP;// 'smtp1.example.com;smtp2.example.com';  // Specify main and backup SMTP servers
         $this->mail->SMTPAuth   = true;      // Enable SMTP authentication
