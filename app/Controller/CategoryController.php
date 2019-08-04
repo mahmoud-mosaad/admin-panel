@@ -1,6 +1,7 @@
 <?php
 /*
-namespace app\Controller;
+namespace app\Controller\CategoryController;
+
 use app\Model\CategoryModel;
 */
 class CategoryController extends Controller

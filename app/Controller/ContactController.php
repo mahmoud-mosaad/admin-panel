@@ -1,7 +1,6 @@
 <?php
-
 /*
-namespace app\Controller;
+namespace app\Controller\ContactController;
 use app\Model\ContactModel;
 */
 class ContactController extends Controller

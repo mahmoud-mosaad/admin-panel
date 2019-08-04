@@ -1,5 +1,9 @@
 <?php
 
+/*
+namespace app\config\mail;
+*/
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 

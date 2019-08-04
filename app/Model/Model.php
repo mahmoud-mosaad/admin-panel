@@ -1,10 +1,10 @@
 <?php
 
 /*
-namespace app\Model\Model;
-
+namespace app\Model;
 use app\database\QueryBuilder;
 */
+
 class Model
 {
     public function all()

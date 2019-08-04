@@ -4,18 +4,7 @@ session_start();
 
 require_once 'loader.php';
 
-//require_once 'vendor/autoload.php';
-
-/*
-require ('phpmailer/PHPMailerAutoload.php');
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-*/
-
 //use app\Controller\UserController;
-
-
 
 
 if (!isset($_GET['url'])){

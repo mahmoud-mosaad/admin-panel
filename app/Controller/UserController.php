@@ -1,15 +1,9 @@
 <?php
-
 /*
-namespace app\Controller;
-
-require 'config/config.php';
-
-//use app\Model\UserModel;
-
+namespace app\Controller\UserController;
+use app\Model\UserModel;
 use app\entity\User;
 */
-
 class UserController extends Controller
 {
     public function __construct()

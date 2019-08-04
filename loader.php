@@ -10,6 +10,7 @@ require_once 'app/database/QueryBuilder.php';
 
 require_once 'app/config/mail.php';
 
+require_once 'app/model/Model.php';
 require_once 'app/model/ContactModel.php';
 require_once 'app/model/AboutModel.php';
 require_once "app/model/UserModel.php";

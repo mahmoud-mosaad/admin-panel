@@ -9,8 +9,6 @@ use app\entity\About;
 require_once 'app/Model/Model.php';
 */
 
-require_once 'Model.php';
-
 class AboutModel extends Model
 {
 

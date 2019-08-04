@@ -1,7 +1,7 @@
 <?php
+
 /*
 namespace app\database;
-use app\database\connection;
 use \PDO;
 */
 

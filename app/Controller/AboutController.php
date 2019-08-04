@@ -1,7 +1,7 @@
 <?php
-
 /*
-namespace app\Controller;
+namespace app\Controller\AboutController;
+
 use app\Model\AboutModel;
 */
 class AboutController
